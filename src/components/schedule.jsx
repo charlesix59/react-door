@@ -1,9 +1,9 @@
 import {Calendar, Col, Row, Badge, Card, Empty, Button, Modal, TimePicker, Input} from "antd";
-import request from "../utils/request";
-import {useQuery} from "@tanstack/react-query";
-import {useState} from "react";
+import {useContext, useState} from "react";
+import {dbContext} from "../App";
 
-/* this was a Calendar
+/**
+* this was a Calendar
 * */
 function Schedule(){
     // variables about Date
@@ -17,13 +17,15 @@ function Schedule(){
     const format = 'HH:mm'
     const { RangePicker } = TimePicker;
 
+    //db
+    const db = useContext(dbContext)
+    console.log(db)
+
     // functions about Data
     const onPanelChange = (value, mode) => {
-        // console.log(value.format('YYYY-MM-DD'), mode);
         setDate(value.format('YYYY-MM-DD'))
     };
     const onSelect = (value) => {
-        // console.log(value.format('YYYY-MM-DD'))
         setDate(value.format('YYYY-MM-DD'))
     }
 
@@ -81,29 +83,12 @@ function Schedule(){
 }
 export default Schedule
 
-/* subcomponent in calendar, to show your schedule in specify day
-* @props: date information
+/**
+* subcomponent in calendar, to show your schedule in specify day
+* @Param props: date information
 * */
 function GetSchedule(props) {
-    // console.log(props.date)
-    const {isLoading, error, data} = useQuery({
-        queryKey: ["repoData",props.date],
-        queryFn: () =>
-            request
-                .get("/schedule/"+props.date)
-                .then((res) => {
-                    // console.log(res.data)
-                    return res.data
-                }),
-        refetchOnWindowFocus:false,
-        refetchOnMount:true,
-    });
-
-    if (isLoading) return "Loading...";
-
-    if (error) return "An error has occurred: " + error.message;
-
-    // console.log(data)
+    let data = []
 
     if(!data||data.length===0){
         return <Empty/>

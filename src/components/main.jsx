@@ -1,6 +1,7 @@
 import Clock from 'react-live-clock';
 import MultiSearch from "./multiSearch";
 import Schedule from "./schedule";
+
 function Main(){
     return(
         <div style={{textAlign:"center"}}>

@@ -1,24 +1,10 @@
 import {List, Radio, Tag} from "antd";
-import {useQuery} from "@tanstack/react-query";
-import request from "../utils/request";
 
-/*
+/**
 * this function will show your target
 *  */
 function Task(){
-    const {isLoading, error, data} = useQuery({
-        queryKey: ["main"],
-        queryFn: () =>
-            request
-                .get("/todo/main")
-                .then((res) => res.data),
-    });
-
-    // console.log(data)
-
-    if (isLoading) return "Loading...";
-
-    if (error) return "An error has occurred: " + error.message;
+    let data = []
     return(
         <List
             itemLayout="horizontal"

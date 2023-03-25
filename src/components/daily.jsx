@@ -1,21 +1,7 @@
 import {List, Radio} from "antd";
-import {useQuery} from "@tanstack/react-query";
-import request from "../utils/request";
 
 function Daily(){
-    const {isLoading, error, data} = useQuery({
-        queryKey: ["daily"],
-        queryFn: () =>
-            request
-                .get("/todo/daily")
-                .then((res) => res.data),
-    });
-
-    // console.log(data)
-
-    if (isLoading) return "Loading...";
-
-    if (error) return "An error has occurred: " + error.message;
+    let data = []
     return(
         <List
             itemLayout="horizontal"

@@ -1,5 +1,3 @@
-import {useQuery} from "@tanstack/react-query";
-import request from "../utils/request";
 import {Card, Col, Divider, Empty} from "antd";
 import Meta from "antd/es/card/Meta";
 
@@ -30,20 +28,7 @@ function Category(props){
 }
 
 function Favorite(){
-    const {isLoading, error, data} = useQuery({
-        queryKey: ["favorite"],
-        queryFn: () =>
-            request
-                .get("/favorite/all")
-                .then((res) => res.data),
-    });
-
-    // console.log(data)
-    if (isLoading)
-        return "Loading...";
-
-    if (error)
-        return "An error has occurred: " + error.message;
+    let data = []
 
     if(!data || data.length===0){
         return <Empty/>
