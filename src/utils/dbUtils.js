@@ -22,7 +22,7 @@ const openDB = function () {
             let objectStore
             if (!db.objectStoreNames.contains("task")) {
                 objectStore = db.createObjectStore("task", {keyPath:"id", autoIncrement: true }) // 创建表
-                objectStore.createIndex("title", "title", { unique: false }) // 创建索引
+                objectStore.createIndex("type", "type", { unique: false }) // 创建索引
             }
             if(!db.objectStoreNames.contains("schedule")){
                 objectStore = db.createObjectStore("schedule", {keyPath:"id", autoIncrement: true })
@@ -98,7 +98,7 @@ const getDataByIndex = function (db,storeName,indexName,indexValue){
         return "";
     }
     let store = db.transaction(storeName, 'readwrite').objectStore(storeName)
-    let request = store.index(indexName).get(indexValue)
+    let request = store.index(indexName).getAll(indexValue)
     return new Promise((resolve, reject) => {
         request.onerror = function(e) {
             reject(e)

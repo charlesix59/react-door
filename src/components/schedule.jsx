@@ -1,5 +1,5 @@
 import {Calendar, Col, Row, Badge, Card, Empty, Button, Modal, TimePicker, Input} from "antd";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {dbContext} from "../App";
 import {addData, getDataByIndex} from "../utils/dbUtils";
 
@@ -9,7 +9,7 @@ import {addData, getDataByIndex} from "../utils/dbUtils";
 function Schedule(){
     // variables about Date
     let now = new Date();
-    now = now.getFullYear()+"-"+(now.getMonth()+1)+"-"+now.getDate();
+    now = now.getFullYear()+"-"+((now.getMonth()+1)>9?"":"0")+(now.getMonth()+1)+"-"+now.getDate();
     const [date,setDate] = useState(now)
     const [beginTime,setBeginTime] = useState(now)
     const [endTime,setEndTime] = useState(now)
@@ -25,7 +25,7 @@ function Schedule(){
     const db = useContext(dbContext)
 
     // functions about Data
-    const onPanelChange = (value, mode) => {
+    const onPanelChange = (value) => {
         setDate(value.format('YYYY-MM-DD'))
     };
     const onSelect = (value) => {
@@ -100,16 +100,20 @@ export default Schedule
 function GetSchedule(props) {
     const db = useContext(dbContext)
     const [data,setData] = useState([])
-    new Promise((resolve, reject) => {
-        if (db)
-            resolve()
-        else
-            reject()
-    }).then(()=>{
-        getDataByIndex(db,"schedule","date",props.date).then(e=>{
-            setData(e)
-        })
-    })
+    console.log(props)
+
+    useEffect(()=>{
+        new Promise((resolve, reject) => {
+            if (db)
+                resolve()
+            else
+                reject()
+        }).then(()=>{
+            getDataByIndex(db,"schedule","date",props.date).then(e=>{
+                setData(e)
+            })
+        }).catch(e=>{console.error(e)})
+    },[db,props])
 
     if(!data||data.length===0){
         return <Empty/>
@@ -119,7 +123,7 @@ function GetSchedule(props) {
         <div style={{marginTop:10}}>
             <Badge.Ribbon text={props.date}>
                 <Card size="small">
-                    {data.title}
+                    {data[0].title}
                 </Card>
             </Badge.Ribbon>
         </div>

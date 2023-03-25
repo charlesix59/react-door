@@ -14,8 +14,6 @@ function App() {
                 setDb(e.data)
             }).catch(e=>{
                 console.log(e)
-            }).finally(e=>{
-                console.log(e)
             })
         },[]
     )
