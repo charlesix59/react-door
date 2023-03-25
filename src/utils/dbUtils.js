@@ -21,11 +21,11 @@ const openDB = function () {
             db = event.target.result // 数据库对象
             let objectStore
             if (!db.objectStoreNames.contains("task")) {
-                objectStore = db.createObjectStore("task", { keyPath:'id',autoIncrement: true }) // 创建表
+                objectStore = db.createObjectStore("task", {keyPath:"id", autoIncrement: true }) // 创建表
                 objectStore.createIndex("title", "title", { unique: false }) // 创建索引
             }
             if(!db.objectStoreNames.contains("schedule")){
-                objectStore = db.createObjectStore("schedule", { keyPath:'id',autoIncrement: true })
+                objectStore = db.createObjectStore("schedule", {keyPath:"id", autoIncrement: true })
                 objectStore.createIndex("date","date",{unique: false})
                 objectStore.createIndex("title","title",{unique: false})
             }
@@ -41,6 +41,7 @@ const openDB = function () {
  **/
 const addData = function (db, storeName, data) {
     return new Promise((resolve, reject) => {
+        console.log(data)
         let req = db
             .transaction([storeName], 'readwrite')
             .objectStore(storeName) // 仓库对象
@@ -85,9 +86,26 @@ const updateData = function (db, storeName, data) {
     })
 }
 
-const getDataByIndex = function (){
+/**
+ * 根据索引找数据
+ * @param {Object} db 数据实例
+ * @param {string} storeName
+ * @param {string} indexName
+ * @param indexValue
+ * */
+const getDataByIndex = function (db,storeName,indexName,indexValue){
+    if(!db){
+        return "";
+    }
+    let store = db.transaction(storeName, 'readwrite').objectStore(storeName)
+    let request = store.index(indexName).get(indexValue)
     return new Promise((resolve, reject) => {
-
+        request.onerror = function(e) {
+            reject(e)
+        }
+        request.onsuccess = function(e) {
+            resolve(e.target.result)
+        }
     })
 }
 

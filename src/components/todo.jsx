@@ -1,19 +1,34 @@
 import {Button, DatePicker, Divider, Input, Modal, Select} from "antd";
 import Daily from "./daily";
 import Task from "./task";
-import {useState} from "react";
+import {useContext, useState} from "react";
+import {dbContext} from "../App";
+import {addData} from "../utils/dbUtils";
 
 function Todo(){
     const [open, setOpen] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [isModeTask, setIsModeTask] = useState(true);
 
+    const db = useContext(dbContext)
+    const [title,setTitle] = useState("")
+    const [description,setDescription] = useState("")
+    const [endTime,setEndTime] = useState()
+
     const showModel = () =>{
         setOpen(true);
     }
     const handleOk = () =>{
         setConfirmLoading(true);
-        //todo: loading data form somewhere
+        addData(db,"task",{
+            "type":isModeTask?"task":"daily",
+            "title":title,
+            "description":description,
+            "endTime":endTime
+        }).then(()=>{
+                setConfirmLoading(false)
+            }
+        )
         setConfirmLoading(false);
         setOpen(false)
     }
@@ -27,11 +42,15 @@ function Todo(){
         else{
             setIsModeTask(false)
         }
-        //todo: handel modeChange
     }
     const onDateChanged = (e)=>{
-        console.log(e)
-        //todo: handel date
+        setEndTime(e?.toString())
+    }
+    const onTitleChanged = (e)=>{
+        setTitle(e.target.value)
+    }
+    const onDescChanged = (e)=>{
+        setDescription(e.target.value)
     }
 
     return(
@@ -57,9 +76,9 @@ function Todo(){
                     ]}
                 />
                 <p>事件名称：</p>
-                <Input/>
+                <Input onChange={onTitleChanged}/>
                 <p>事件描述：</p>
-                <Input/>
+                <Input onChange={onDescChanged}/>
                 <p>截止日期：</p>
                 <DatePicker onChange={onDateChanged} disabled={!isModeTask}/>
             </Modal>
