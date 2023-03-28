@@ -1,5 +1,6 @@
 import {Card, Col, Divider, Empty} from "antd";
 import Meta from "antd/es/card/Meta";
+import favorites from "../assert/favoriteData.json"
 
 function Category(props){
     // console.log(props)
@@ -28,7 +29,8 @@ function Category(props){
 }
 
 function Favorite(){
-    let data = []
+    console.log(favorites);
+    let data = favorites
 
     if(!data || data.length===0){
         return <Empty/>
