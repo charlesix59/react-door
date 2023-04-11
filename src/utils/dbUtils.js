@@ -87,6 +87,33 @@ const updateData = function (db, storeName, data) {
 }
 
 /**
+ *
+ * @param {object} db 数据库实例
+ * @param {string} storeName 仓库名称
+ * @param id 要删除的数据id
+ * @return {Promise<unknown>}
+ */
+const deleteData = function (db, storeName, id){
+    return new Promise((resolve, reject) => {
+        const req = db
+            .transaction([storeName], 'readwrite')
+            .objectStore(storeName)
+            .delete(id)
+        // 操作成功
+        req.onsuccess = function () {
+            console.log('数据更新成功')
+            resolve({code: 0, success: true, data: null, msg: '数据更新成功!'})
+        }
+        // 操作失败
+        req.onerror = function (event) {
+            console.log('数据更新失败')
+            let data = {code: -1, success: false, data: null, msg: '数据更新失败!'+event}
+            reject(data)
+        }
+    })
+}
+
+/**
  * 根据索引找数据
  * @param {Object} db 数据实例
  * @param {string} storeName
@@ -109,4 +136,4 @@ const getDataByIndex = function (db,storeName,indexName,indexValue){
     })
 }
 
-export {openDB,addData,updateData,getDataByIndex}
+export {openDB,addData,updateData,getDataByIndex,deleteData}

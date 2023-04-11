@@ -1,4 +1,4 @@
-import {Calendar, Col, Row, Badge, Card, Empty, Button, Modal, TimePicker, Input} from "antd";
+import {Calendar, Col, Row, Empty, Button, Modal, TimePicker, Input, List} from "antd";
 import {useContext, useEffect, useState} from "react";
 import {dbContext} from "../App";
 import {addData, getDataByIndex} from "../utils/dbUtils";
@@ -100,7 +100,6 @@ export default Schedule
 function GetSchedule(props) {
     const db = useContext(dbContext)
     const [data,setData] = useState([])
-    console.log(props)
 
     useEffect(()=>{
         new Promise((resolve, reject) => {
@@ -119,13 +118,26 @@ function GetSchedule(props) {
         return <Empty/>
     }
 
+    const onListItemClickHandler = function(e){
+        console.log(e.target.parentNode.parentNode.id)
+    }
+
+    // console.log(data)
+
     return (
-        <div style={{marginTop:10}}>
-            <Badge.Ribbon text={props.date}>
-                <Card size="small">
-                    {data[0].title}
-                </Card>
-            </Badge.Ribbon>
-        </div>
+        <List
+            itemLayout="horizontal"
+            dataSource={data}
+            onClick={onListItemClickHandler}
+            renderItem={(item, index) => (
+                <List.Item id={index}>
+                    <List.Item.Meta
+                        id={item.id}
+                        title={item.title}
+                        description={item.date}
+                    />
+                </List.Item>
+            )}
+        />
     );
 }
