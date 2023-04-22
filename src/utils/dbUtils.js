@@ -61,12 +61,13 @@ const addData = function (db, storeName, data) {
 }
 
 /**
- * 更新数据
- * @param {object} db 数据库实例
- * @param {string} storeName 仓库名称
- * @param {object} data 数据
+ *
+ * @param db 数据库链接
+ * @param storeName 库名
+ * @param data 数据
+ * @return {Promise<unknown>} 返回一个promise
  */
-const updateData = function (db, storeName, data) {
+const updateData = function (db,storeName,data) {
     return new Promise((resolve, reject) => {
         const req = db
             .transaction([storeName], 'readwrite')
