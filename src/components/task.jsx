@@ -1,6 +1,6 @@
 import {List, Radio, Tag} from "antd";
 import {useContext, useEffect, useState} from "react";
-import {getDataByIndex} from "../utils/dbUtils";
+import {deleteData, getDataByIndex} from "../utils/dbUtils";
 import {dbContext} from "../App";
 /**
 * this function will show your target
@@ -20,13 +20,20 @@ function Task(){
             })
         }).catch(e=>{console.error(e)})
     },[db])
+    const selectHandler = (e)=>{
+        const arr = JSON.parse(JSON.stringify(data));
+        arr.splice(parseInt(e.target.name),1);
+        setData(arr);
+        deleteData(db,"task",parseInt(e.target.id)).then().catch(e=>{console.log(e)})
+    }
     return(
         <List
+            onChange={selectHandler}
             itemLayout="horizontal"
             dataSource={data}
-            renderItem={(item) => (
+            renderItem={(item,key) => (
                 <List.Item>
-                    <Radio></Radio>
+                    <Radio id={item.id} name={key}></Radio>
                     <List.Item.Meta
                         title={<span>{item.title}</span>}
                         description={item.description}
