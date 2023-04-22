@@ -1,7 +1,9 @@
 import {Calendar, Col, Row, Empty, Button, Modal, TimePicker, Input, List} from "antd";
 import {useContext, useEffect, useState} from "react";
 import {dbContext} from "../App";
-import {addData, getDataByIndex} from "../utils/dbUtils";
+import {addData, deleteData, getDataByIndex} from "../utils/dbUtils";
+import ScheduleItem from "./scheduleItem";
+import DeleteBin from "./deleteBin";
 
 /**
 * this was a Calendar
@@ -69,7 +71,7 @@ function Schedule(){
                     <Calendar fullscreen={false} onPanelChange={onPanelChange} onSelect={onSelect}/>
                 </div>
             </Col>
-            <Col offset={2} span={11}>
+            <Col offset={2} span={11} style={{display:"relative"}}>
                 <Button type={"primary"} onClick={showModel}>
                     添加日程
                 </Button>
@@ -122,22 +124,26 @@ function GetSchedule(props) {
         console.log(e.target.parentNode.parentNode.id)
     }
 
+    const changeDate = function (index,id){
+        const arr = data
+        arr.splice(index,1)
+        setData(arr)
+        deleteData(db, "schedule", id).then(e=>{console.log("删除成功"+e)}).catch(e=>{console.log(e)})
+    }
+
     // console.log(data)
 
     return (
-        <List
-            itemLayout="horizontal"
-            dataSource={data}
-            onClick={onListItemClickHandler}
-            renderItem={(item, index) => (
-                <List.Item id={index}>
-                    <List.Item.Meta
-                        id={item.id}
-                        title={item.title}
-                        description={item.date}
-                    />
-                </List.Item>
-            )}
-        />
+        <>
+            <List
+                itemLayout="horizontal"
+                dataSource={data}
+                onClick={onListItemClickHandler}
+                renderItem={(item, index) => (
+                    <ScheduleItem item={item} index={index} changeData={changeDate}/>
+                )}
+            />
+            <DeleteBin/>
+        </>
     );
 }

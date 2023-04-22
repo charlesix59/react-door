@@ -1,6 +1,8 @@
 import Clock from 'react-live-clock';
 import MultiSearch from "./multiSearch";
 import Schedule from "./schedule";
+import {DndProvider} from "react-dnd";
+import {HTML5Backend} from "react-dnd-html5-backend";
 
 function Main(){
     return(
@@ -9,7 +11,9 @@ function Main(){
                 <Clock format={'HH:mm:ss'} ticking={true}/>
             </p>
             <MultiSearch/>
-            <Schedule/>
+            <DndProvider backend={HTML5Backend}>
+                <Schedule/>
+            </DndProvider>
         </div>
     )
 }
