@@ -55,17 +55,15 @@ function MultiSearch(){
         </Select>
     );
     return(
-        <Search
-            addonBefore={selectAfter}
-            enterButton="Search"
-            size="large"
-            suffix={suffix}
-            onSearch={onSearch}
-            style={{
-                width: 700,
-                marginBottom: "6rem",
-            }}
-        />
+        <div className={"search"}>
+            <Search
+                addonBefore={selectAfter}
+                enterButton="Search"
+                size="large"
+                suffix={suffix}
+                onSearch={onSearch}
+            />
+        </div>
     )
 }
 export default MultiSearch
