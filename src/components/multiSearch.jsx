@@ -1,6 +1,6 @@
 import {Input, Select} from "antd";
 import {Option} from "antd/es/mentions";
-import {BoldOutlined, GoogleOutlined, WindowsOutlined} from "@ant-design/icons";
+import {BoldOutlined, CodeOutlined, GoogleOutlined, WindowsOutlined} from "@ant-design/icons";
 import {useState} from "react";
 const { Search } = Input;
 
@@ -9,9 +9,14 @@ function MultiSearch(){
         console.log(value)
         if(searchEngine==="baidu"){
             window.open("https://www.baidu.com/s?wd="+value,"_blank")
-        }else if (searchEngine==="bing"){
+        }
+        else if (searchEngine==="bing"){
             window.open("https://www.bing.com/search?q="+value,"_blank")
-        }else {
+        }
+        else if (searchEngine==="baiduDev"){
+            window.open("https://kaifa.baidu.com/searchPage?wd="+value,"_blank")
+        }
+        else {
             window.open("https://www.google.com/search?q="+value,"_blank")
         }
     };
@@ -37,6 +42,16 @@ function MultiSearch(){
             />
         )
     }
+    else if(searchEngine==="baiduDev"){
+        suffix=(
+            <CodeOutlined
+                style={{
+                    fontSize: 24,
+                    color: '#1890ff',
+                }}
+            />
+        )
+    }
     else {
         suffix=(
             <WindowsOutlined
@@ -50,6 +65,7 @@ function MultiSearch(){
     const selectAfter = (
         <Select defaultValue="百度" onChange={(e)=>{setSearchEngine(e)}}>
             <Option value="baidu">百度</Option>
+            <Option value="baiduDev">百度开发者</Option>
             <Option value="google">谷歌</Option>
             <Option value="bing">必应</Option>
         </Select>
