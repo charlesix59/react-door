@@ -3,7 +3,7 @@ import {useContext, useEffect, useState} from "react";
 import {dbContext} from "../../../App";
 import {addData, deleteData, getDataByIndex} from "../../../utils/dbUtils";
 import ScheduleItem from "./scheduleItem";
-import DeleteBin from "../search/deleteBin";
+import DeleteBin from "./deleteBin";
 
 /**
 * this was a Calendar

@@ -1,6 +1,6 @@
 import {List} from "antd";
 import {useDrag} from "react-dnd";
-import {ItemTypes} from "../search/draggableItems";
+import {ItemTypes} from "./draggableItems";
 
 const ScheduleItem = function (props){
     const [{ isDragging }, drag] = useDrag(() => ({
