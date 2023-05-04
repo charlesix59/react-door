@@ -1,7 +1,7 @@
 import {List, Radio, Tag} from "antd";
 import {useContext, useEffect, useState} from "react";
-import {deleteData, getDataByIndex} from "../utils/dbUtils";
-import {dbContext} from "../App";
+import {deleteData, getDataByIndex} from "../../utils/dbUtils";
+import {dbContext} from "../../App";
 /**
 * this function will show your target
 *  */

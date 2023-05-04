@@ -1,6 +1,6 @@
 import {List, Radio} from "antd";
-import {dbContext} from "../App";
-import {getDataByIndex, updateData} from "../utils/dbUtils";
+import {dbContext} from "../../App";
+import {getDataByIndex, updateData} from "../../utils/dbUtils";
 import {useContext, useEffect, useState} from "react";
 
 function Daily(){

@@ -2,8 +2,8 @@ import {Button, DatePicker, Divider, Input, Modal, Select} from "antd";
 import Daily from "./daily";
 import Task from "./task";
 import {useContext, useState} from "react";
-import {dbContext} from "../App";
-import {addData} from "../utils/dbUtils";
+import {dbContext} from "../../App";
+import {addData} from "../../utils/dbUtils";
 
 function Todo(){
     const [open, setOpen] = useState(false);

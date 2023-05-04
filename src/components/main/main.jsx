@@ -1,6 +1,6 @@
 import Clock from 'react-live-clock';
-import MultiSearch from "./multiSearch";
-import Schedule from "./schedule";
+import MultiSearch from "./search/multiSearch";
+import Schedule from "./schedule/schedule";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 

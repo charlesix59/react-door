@@ -1,9 +1,9 @@
 import {Calendar, Col, Row, Empty, Button, Modal, TimePicker, Input, List} from "antd";
 import {useContext, useEffect, useState} from "react";
-import {dbContext} from "../App";
-import {addData, deleteData, getDataByIndex} from "../utils/dbUtils";
+import {dbContext} from "../../../App";
+import {addData, deleteData, getDataByIndex} from "../../../utils/dbUtils";
 import ScheduleItem from "./scheduleItem";
-import DeleteBin from "./deleteBin";
+import DeleteBin from "../search/deleteBin";
 
 /**
 * this was a Calendar

@@ -1,8 +1,8 @@
 import './App.css';
 import {Col, Row} from "antd";
-import Main from "./components/main";
-import Navigator from "./components/navigator";
-import Todo from "./components/todo";
+import Main from "./components/main/main";
+import Navigator from "./components/portal/navigator";
+import Todo from "./components/todo/todo";
 import {openDB} from "./utils/dbUtils";
 import {createContext, useEffect, useState} from "react";
 export const dbContext = createContext(null)
