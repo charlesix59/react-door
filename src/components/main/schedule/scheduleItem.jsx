@@ -20,7 +20,10 @@ const ScheduleItem = function (props){
                 <List.Item.Meta
                     id={props.item.id}
                     title={props.item.title}
-                    description={props.item.date}
+                    description={`${props.item.beginTime.$H>10?props.item.beginTime.$H:0+props.item.beginTime.$H}:
+                    ${props.item.beginTime.$m>10?props.item.beginTime.$m:'0'+props.item.beginTime.$m} - 
+                    ${props.item.endTime.$H>10?props.item.endTime.$H:'0'+props.item.endTime.$H}
+                    :${props.item.endTime.$m>10?props.item.endTime.$m:'0'+props.item.endTime.$m}`}
                 />
             </List.Item>
         </>

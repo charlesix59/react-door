@@ -131,7 +131,7 @@ function GetSchedule(props) {
         deleteData(db, "schedule", id).then(e=>{console.log("删除成功"+e)}).catch(e=>{console.log(e)})
     }
 
-    // console.log(data)
+    console.log(data)
 
     return (
         <>
