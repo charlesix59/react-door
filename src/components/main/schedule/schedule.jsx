@@ -1,7 +1,7 @@
 import {Calendar, Col, Row, Empty, Button, Modal, TimePicker, Input, List} from "antd";
 import {useContext, useEffect, useState} from "react";
 import {dbContext} from "../../../App";
-import {addData, deleteData, getDataByIndex} from "../../../utils/dbUtils";
+import {deleteData, getDataByIndex, updateData} from "../../../utils/dbUtils";
 import ScheduleItem from "./scheduleItem";
 import DeleteBin from "./deleteBin";
 
@@ -22,6 +22,7 @@ function Schedule(){
     const [confirmLoading, setConfirmLoading] = useState(false);
     const format = 'HH:mm'
     const { RangePicker } = TimePicker;
+    const [itemId,setItemId] = useState(undefined);
 
     //db
     const db = useContext(dbContext)
@@ -39,16 +40,22 @@ function Schedule(){
         setOpen(true);
     }
     const handleOk = () =>{
-        setConfirmLoading(true);
-        addData(db,"schedule",{
+        let data = {
             "date":date,
             "beginTime":beginTime,
             "endTime":endTime,
             "title":title
-        }).then((e)=>{
+        }
+        setConfirmLoading(true);
+        if (itemId){
+            data.id = itemId;
+        }
+        console.log(data)
+        updateData(db,"schedule",data).then((e)=>{
                 console.log(e)
                 setConfirmLoading(false)
                 setOpen(false)
+                setItemId(void 0)
             }
         )
     }
@@ -76,7 +83,7 @@ function Schedule(){
                     添加日程
                 </Button>
                 <Modal
-                    title="Title"
+                    title="设置日程"
                     open={open}
                     onOk={handleOk}
                     confirmLoading={confirmLoading}
@@ -88,7 +95,7 @@ function Schedule(){
                     <Input onChange={onTitleChanged}/>
                 </Modal>
                 <br/>
-                <GetSchedule date={date}/>
+                <GetSchedule date={date} setOpen={setOpen} setId={setItemId}/>
             </Col>
         </Row>
     );
@@ -102,6 +109,7 @@ export default Schedule
 function GetSchedule(props) {
     const db = useContext(dbContext)
     const [data,setData] = useState([])
+    const [state,setState] = useState(false)
 
     useEffect(()=>{
         new Promise((resolve, reject) => {
@@ -114,24 +122,23 @@ function GetSchedule(props) {
                 setData(e)
             })
         }).catch(e=>{console.error(e)})
-    },[db,props])
+    },[db,props,state])
 
     if(!data||data.length===0){
         return <Empty/>
     }
 
     const onListItemClickHandler = function(e){
-        console.log(e.target.parentNode.parentNode.id)
+        props.setOpen(true)
+        props.setId(parseInt(e.target.parentNode.parentNode.id))
     }
 
     const changeDate = function (index,id){
-        const arr = data
-        arr.splice(index,1)
-        setData(arr)
-        deleteData(db, "schedule", id).then(e=>{console.log("删除成功"+e)}).catch(e=>{console.log(e)})
+        deleteData(db, "schedule", id).then(e=>{
+            console.log("删除成功"+e)
+            setState(!state)
+        }).catch(e=>{console.log(e)})
     }
-
-    console.log(data)
 
     return (
         <>

@@ -61,7 +61,7 @@ const addData = function (db, storeName, data) {
 }
 
 /**
- *
+ * 新增或更新数据
  * @param db 数据库链接
  * @param storeName 库名
  * @param data 数据

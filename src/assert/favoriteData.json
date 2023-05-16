@@ -17,6 +17,12 @@
       "url": "https://echarts.apache.org/zh/index.html",
       "icon": "https://echarts.apache.org/zh/images/favicon.png?_v_=20200710_1",
       "description": "一个基于 JavaScript 的开源可视化图表库"
+    },
+    {
+      "title": "React-dnd",
+      "url": "https://react-dnd.github.io/react-dnd/about",
+      "icon": "https://react-dnd.github.io/react-dnd/favicon-32x32.png?v=b4e3a877490f33e678d9e30b115e75c3",
+      "description": "一组构建低耦合的复杂的可拖放组件的React实用程序。"
     }
   ],
   "实用工具": [
