@@ -1,9 +1,10 @@
 import {List} from "antd";
 import {useDrag} from "react-dnd";
 import {ItemTypes} from "./draggableItems";
+import {CompressOutlined} from "@ant-design/icons";
 
 const ScheduleItem = function (props){
-    const [{ isDragging }, drag] = useDrag(() => ({
+    const [{ isDragging }, drag,preview] = useDrag(() => ({
         type: ItemTypes.SCHEDULE_ITEM,
         end:(draggedItem, monitor)=>{
             if (monitor.didDrop()){
@@ -14,9 +15,10 @@ const ScheduleItem = function (props){
             isDragging: !!monitor.isDragging()
         })
     }))
+
     return(
         <>
-            <List.Item id={props.index} ref={drag} style={{opacity: isDragging ? 0.5 : 1}}>
+            <List.Item id={props.index} ref={preview} style={{opacity: isDragging ? 0.5 : 1}}>
                 <List.Item.Meta
                     id={props.item.id}
                     title={props.item.title}
@@ -25,6 +27,7 @@ const ScheduleItem = function (props){
                     ${props.item.endTime.$H>10?props.item.endTime.$H:'0'+props.item.endTime.$H}
                     :${props.item.endTime.$m>10?props.item.endTime.$m:'0'+props.item.endTime.$m}`}
                 />
+                <CompressOutlined ref={drag}/>
             </List.Item>
         </>
     )
