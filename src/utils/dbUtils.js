@@ -13,7 +13,7 @@ const openDB = function () {
         }
         // 操作失败
         req.onerror = function (event) {
-            reject({code: -1, success: false, data: null, msg: '数据库打开失败!reason：'+event.target})
+            reject({code: -1, success: false, data: null, msg: '数据库打开失败!reason：' + event.target})
         }
         // 创建表和索引
         req.onupgradeneeded = function (event) {
@@ -21,13 +21,13 @@ const openDB = function () {
             db = event.target.result // 数据库对象
             let objectStore
             if (!db.objectStoreNames.contains("task")) {
-                objectStore = db.createObjectStore("task", {keyPath:"id", autoIncrement: true }) // 创建表
-                objectStore.createIndex("type", "type", { unique: false }) // 创建索引
+                objectStore = db.createObjectStore("task", {keyPath: "id", autoIncrement: true}) // 创建表
+                objectStore.createIndex("type", "type", {unique: false}) // 创建索引
             }
-            if(!db.objectStoreNames.contains("schedule")){
-                objectStore = db.createObjectStore("schedule", {keyPath:"id", autoIncrement: true })
-                objectStore.createIndex("date","date",{unique: false})
-                objectStore.createIndex("title","title",{unique: false})
+            if (!db.objectStoreNames.contains("schedule")) {
+                objectStore = db.createObjectStore("schedule", {keyPath: "id", autoIncrement: true})
+                objectStore.createIndex("date", "date", {unique: false})
+                objectStore.createIndex("title", "title", {unique: false})
             }
         }
     })
@@ -54,7 +54,7 @@ const addData = function (db, storeName, data) {
         // 操作失败
         req.onerror = function (event) {
             console.log('数据写入失败')
-            let data = {code: -1, success: false, data: null, msg: '数据写入失败!'+event}
+            let data = {code: -1, success: false, data: null, msg: '数据写入失败!' + event}
             reject(data)
         }
     })
@@ -67,7 +67,7 @@ const addData = function (db, storeName, data) {
  * @param data 数据
  * @return {Promise<unknown>} 返回一个promise
  */
-const updateData = function (db,storeName,data) {
+const updateData = function (db, storeName, data) {
     return new Promise((resolve, reject) => {
         const req = db
             .transaction([storeName], 'readwrite')
@@ -81,7 +81,7 @@ const updateData = function (db,storeName,data) {
         // 操作失败
         req.onerror = function (event) {
             console.log('数据更新失败')
-            let data = {code: -1, success: false, data: null, msg: '数据更新失败!'+event}
+            let data = {code: -1, success: false, data: null, msg: '数据更新失败!' + event}
             reject(data)
         }
     })
@@ -94,7 +94,7 @@ const updateData = function (db,storeName,data) {
  * @param id 要删除的数据id
  * @return {Promise<unknown>}
  */
-const deleteData = function (db, storeName, id){
+const deleteData = function (db, storeName, id) {
     return new Promise((resolve, reject) => {
         const req = db
             .transaction([storeName], 'readwrite')
@@ -108,7 +108,7 @@ const deleteData = function (db, storeName, id){
         // 操作失败
         req.onerror = function (event) {
             console.log('数据更新失败')
-            let data = {code: -1, success: false, data: null, msg: '数据更新失败!'+event}
+            let data = {code: -1, success: false, data: null, msg: '数据更新失败!' + event}
             reject(data)
         }
     })
@@ -121,20 +121,43 @@ const deleteData = function (db, storeName, id){
  * @param {string} indexName
  * @param indexValue
  * */
-const getDataByIndex = function (db,storeName,indexName,indexValue){
-    if(!db){
+const getDataByIndex = function (db, storeName, indexName, indexValue) {
+    if (!db) {
         return "";
     }
     let store = db.transaction(storeName, 'readwrite').objectStore(storeName)
     let request = store.index(indexName).getAll(indexValue)
     return new Promise((resolve, reject) => {
-        request.onerror = function(e) {
+        request.onerror = function (e) {
             reject(e)
         }
-        request.onsuccess = function(e) {
+        request.onsuccess = function (e) {
             resolve(e.target.result)
         }
     })
 }
 
-export {openDB,addData,updateData,getDataByIndex,deleteData}
+/**
+ * 根据主键查询
+ * @param {indexedDB} db 数据库实例
+ * @param {string} storeName
+ * @param {number} key
+ * @return {string|Promise<unknown>}
+ */
+const getDataByKey = function (db, storeName, key) {
+    if (!db) {
+        return "";
+    }
+    let store = db.transaction(storeName, 'readwrite').objectStore(storeName)
+    let request = store.get(key);
+    return new Promise((resolve, reject) => {
+        request.onerror = function (e) {
+            reject(e)
+        }
+        request.onsuccess = function (e) {
+            resolve(e.target.result)
+        }
+    })
+}
+
+export {openDB, addData, updateData, getDataByIndex, deleteData, getDataByKey}
