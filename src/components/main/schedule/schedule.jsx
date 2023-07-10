@@ -1,28 +1,29 @@
 import {Calendar, Col, Row, Empty, Button, Modal, TimePicker, Input, List} from "antd";
 import {useContext, useEffect, useState} from "react";
 import {dbContext} from "../../../App";
-import {deleteData, getDataByIndex, updateData} from "../../../utils/dbUtils";
+import {deleteData, getDataByIndex, getDataByKey, updateData} from "../../../utils/dbUtils";
 import ScheduleItem from "./scheduleItem";
 import DeleteBin from "./deleteBin";
+import dayjs from "dayjs";
 
 /**
-* this was a Calendar
-* */
-function Schedule(){
+ * this was a Calendar
+ * */
+function Schedule() {
     // variables about Date
     let now = new Date();
-    now = now.getFullYear()+"-"+((now.getMonth()+1)>9?"":"0")+(now.getMonth()+1)+"-"+now.getDate();
-    const [date,setDate] = useState(now)
-    const [beginTime,setBeginTime] = useState(now)
-    const [endTime,setEndTime] = useState(now)
-    const [title,setTitle] = useState("")
+    now = now.getFullYear() + "-" + ((now.getMonth() + 1) > 9 ? "" : "0") + (now.getMonth() + 1) + "-" + now.getDate();
+    const [date, setDate] = useState(now)
+    const [beginTime, setBeginTime] = useState(dayjs())
+    const [endTime, setEndTime] = useState(dayjs())
+    const [title, setTitle] = useState("")
 
     // variables about Model
     const [open, setOpen] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
     const format = 'HH:mm'
-    const { RangePicker } = TimePicker;
-    const [itemId,setItemId] = useState(undefined);
+    const {RangePicker} = TimePicker;
+    const [itemId, setItemId] = useState(undefined);
 
     //db
     const db = useContext(dbContext)
@@ -36,37 +37,55 @@ function Schedule(){
     }
 
     //functions about Model
-    const showModel = () =>{
+    useEffect( () => {
+        async function fetchData() {
+            if (!itemId) {
+                setBeginTime(dayjs());
+                setEndTime(dayjs());
+                setTitle('')
+                return;
+            }
+            try {
+                const data = await getDataByKey(db, 'schedule', itemId)
+                setBeginTime(dayjs(data.beginTime.$d));
+                setEndTime(dayjs(data.endTime.$d))
+                setTitle(data.title)
+            }catch (e){
+                console.log(e);
+            }
+        }
+        fetchData().then(r => r);
+    },[db, itemId])
+    const showModel = () => {
         setOpen(true);
     }
-    const handleOk = () =>{
+    const handleOk = () => {
         let data = {
-            "date":date,
-            "beginTime":beginTime,
-            "endTime":endTime,
-            "title":title
+            "date": date,
+            "beginTime": beginTime,
+            "endTime": endTime,
+            "title": title
         }
         setConfirmLoading(true);
-        if (itemId){
+        if (itemId) {
             data.id = itemId;
         }
         console.log(data)
-        updateData(db,"schedule",data).then((e)=>{
-                console.log(e)
+        updateData(db, "schedule", data).then((e) => {
                 setConfirmLoading(false)
                 setOpen(false)
                 setItemId(void 0)
             }
         )
     }
-    const handleCancel = () =>{
+    const handleCancel = () => {
         setOpen(false)
     }
-    const onTimeSelected = (e) =>{
+    const onTimeSelected = (e) => {
         setBeginTime(e[0])
         setEndTime(e[1])
     }
-    const onTitleChanged = (e) =>{
+    const onTitleChanged = (e) => {
         setTitle(e.target.value)
     }
 
@@ -78,11 +97,12 @@ function Schedule(){
                     <Calendar fullscreen={false} onPanelChange={onPanelChange} onSelect={onSelect}/>
                 </div>
             </Col>
-            <Col offset={2} span={11} style={{display:"relative"}}>
+            <Col offset={2} span={11} style={{display: "relative"}}>
                 <Button type={"primary"} onClick={showModel}>
                     添加日程
                 </Button>
                 <Modal
+                    key={itemId}
                     title="设置日程"
                     open={open}
                     onOk={handleOk}
@@ -90,9 +110,9 @@ function Schedule(){
                     onCancel={handleCancel}
                 >
                     <p>事件时间：</p>
-                    <RangePicker format={format} onChange={onTimeSelected}/>
+                    <RangePicker format={format} onChange={onTimeSelected} value={[beginTime,endTime]}/>
                     <p>事件名称：</p>
-                    <Input onChange={onTitleChanged}/>
+                    <Input onChange={onTitleChanged} value={title}/>
                 </Modal>
                 <br/>
                 <GetSchedule date={date} setOpen={setOpen} setId={setItemId}/>
@@ -100,44 +120,49 @@ function Schedule(){
         </Row>
     );
 }
+
 export default Schedule
 
 /**
-* subcomponent in calendar, to show your schedule in specify day
-* @Param props: date information
-* */
+ * subcomponent in calendar, to show your schedule in specify day
+ * @Param props: date information
+ * */
 function GetSchedule(props) {
     const db = useContext(dbContext)
-    const [data,setData] = useState([])
-    const [state,setState] = useState(false)
+    const [data, setData] = useState([])
+    const [state, setState] = useState(false)
 
-    useEffect(()=>{
+    useEffect(() => {
         new Promise((resolve, reject) => {
             if (db)
                 resolve()
             else
                 reject()
-        }).then(()=>{
-            getDataByIndex(db,"schedule","date",props.date).then(e=>{
+        }).then(() => {
+            getDataByIndex(db, "schedule", "date", props.date).then(e => {
                 setData(e)
             })
-        }).catch(e=>{console.error(e)})
-    },[db,props,state])
+        }).catch(e => {
+            console.error(e)
+        })
+    }, [db, props, state])
 
-    if(!data||data.length===0){
+    if (!data || data.length === 0) {
         return <Empty/>
     }
 
-    const onListItemClickHandler = function(e){
+    const onListItemClickHandler = function (e) {
         props.setOpen(true)
         props.setId(parseInt(e.target.parentNode.parentNode.id))
     }
 
-    const changeDate = function (index,id){
-        deleteData(db, "schedule", id).then(e=>{
-            console.log("删除成功"+e)
+    const changeDate = function (index, id) {
+        deleteData(db, "schedule", id).then(e => {
+            console.log("删除成功" + e)
             setState(!state)
-        }).catch(e=>{console.log(e)})
+        }).catch(e => {
+            console.log(e)
+        })
     }
 
     return (
