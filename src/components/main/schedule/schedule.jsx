@@ -71,7 +71,7 @@ function Schedule() {
             data.id = itemId;
         }
         console.log(data)
-        updateData(db, "schedule", data).then((e) => {
+        updateData(db, "schedule", data).then(() => {
                 setConfirmLoading(false)
                 setOpen(false)
                 setItemId(void 0)
@@ -152,14 +152,18 @@ function GetSchedule(props) {
     }
 
     const onListItemClickHandler = function (e) {
+        if(e.target.tagName==='LI') {
+            return;
+        }
         props.setOpen(true)
         props.setId(parseInt(e.target.parentNode.parentNode.id))
     }
 
     const changeDate = function (index, id) {
-        deleteData(db, "schedule", id).then(e => {
-            console.log("删除成功" + e)
-            setState(!state)
+        deleteData(db, "schedule", id).then(() => {
+            setState(state => {
+                return !state;
+            });
         }).catch(e => {
             console.log(e)
         })
@@ -171,8 +175,9 @@ function GetSchedule(props) {
                 itemLayout="horizontal"
                 dataSource={data}
                 onClick={onListItemClickHandler}
+                style={{overflowY: "scroll", height: '60%'}}
                 renderItem={(item, index) => (
-                    <ScheduleItem item={item} index={index} changeData={changeDate}/>
+                    <ScheduleItem key={item.id} item={item} index={index} changeData={changeDate}/>
                 )}
             />
             <DeleteBin/>
