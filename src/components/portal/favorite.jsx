@@ -16,7 +16,7 @@ function Category(props){
                                 style={{
                                     width: 240,
                                 }}
-                                cover={<img alt="icon" src={item.icon} height={144}/>}
+                                cover={<div style={{height: "144px",display: "grid"}}><img alt="icon" src={item.icon} style={{margin: "auto"}} /></div>}
                             >
                                 <Meta style={{maxHeight:"5rem"}} title={item.title} description={item.description} />
                             </Card>
