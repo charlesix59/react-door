@@ -28,7 +28,6 @@
   "rules": {
     "for-direction": "off",
     "getter-return": "error",
-    "no-const-assign": "error",
     "no-constant-condition": "warn",
     "no-dupe-args": "error",
     "no-duplicate-imports": "warn",
