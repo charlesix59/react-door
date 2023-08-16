@@ -41,7 +41,6 @@
 //    "max-lines": [2,300,false,true],
     "new-cap": "warn",
     "no-empty-function": "error",
-    "no-new-func": "error",
-    "array-bracket-spacing": []
+    "no-new-func": "error"
   }
 }
