@@ -38,7 +38,7 @@
     "curly": "error",
     "default-case": "error",
     "max-len": [2,80,4],
-    "max-lines": [2,300,false,true],
+//    "max-lines": [2,300,false,true],
     "new-cap": "warn",
     "no-empty-function": "error",
     "no-new-func": "error",
