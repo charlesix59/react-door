@@ -1,0 +1,48 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
+  ],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react",
+    "jsx-a11y",
+    "react-hooks"
+  ],
+  "globals": {
+    "JSX": true,
+    "React": true
+  },
+  "rules": {
+    "for-direction": "off",
+    "getter-return": "error",
+    "no-const-assign": "error",
+    "no-constant-condition": "warn",
+    "no-dupe-args": "error",
+    "no-duplicate-imports": "warn",
+    "no-irregular-whitespace": "error",
+    "no-unused-private-class-members": "error",
+    "no-use-before-define": "error",
+    "camelcase": "warn",
+    "curly": "error",
+    "default-case": "error",
+    "max-len": [2,80,4],
+    "max-lines": [2,300,false,true],
+    "new-cap": "warn",
+    "no-empty-function": "error",
+    "no-new-func": "error",
+    "array-bracket-spacing": []
+  }
+}

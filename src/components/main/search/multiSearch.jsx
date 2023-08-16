@@ -29,7 +29,7 @@ function MultiSearch(){
     suffix = searchEngine.suffix
 
     const changeEngine = function (e){
-        setSearchEngine(selectEngine(e)||searchEngine);
+        setSearchEngine(selectEngine(e)||searchEngine)
     }
 
     const selectAfter = (
