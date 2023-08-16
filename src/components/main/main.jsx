@@ -6,14 +6,16 @@ import {HTML5Backend} from "react-dnd-html5-backend";
 
 function Main(){
     return(
-        <div style={{textAlign:"center"}}>
-            <p style={{fontSize:"7rem",color:"silver",margin:0,padding:0}}>
+        <div style={{height:"100vh",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center"}}>
+            <p style={{fontSize:"7rem",color:"silver",textAlign:"center",margin:"0 auto"}}>
                 <Clock format={'HH:mm:ss'} ticking={true}/>
             </p>
             <MultiSearch/>
-            <DndProvider backend={HTML5Backend}>
-                <Schedule/>
-            </DndProvider>
+            <div style={{flexGrow:1,justifyContent:"center",display:"flex",justifySelf:"center",alignItems:"center"}}>
+                <DndProvider backend={HTML5Backend}>
+                    <Schedule/>
+                </DndProvider>
+            </div>
         </div>
     )
 }

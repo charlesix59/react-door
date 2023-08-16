@@ -20,7 +20,7 @@ function App() {
 
   return (
     <dbContext.Provider value={db}>
-        <Row style={{height:"70vh"}}>
+        <Row style={{height:"100vh"}}>
             <Col span={18}>
                 <Main/>
             </Col>
