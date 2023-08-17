@@ -7,7 +7,7 @@ import DeleteBin from "./deleteBin";
 
 /**
  * subcomponent in calendar, to show your schedule in specify day
- * @Param props: date information
+ * @Param props date information
  * */
 export function ScheduleList(props) {
     const db = useContext(dbContext)
