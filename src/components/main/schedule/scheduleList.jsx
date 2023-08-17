@@ -17,9 +17,9 @@ export function ScheduleList(props) {
     useEffect(() => {
         new Promise((resolve, reject) => {
             if (db)
-                resolve()
+                { resolve() }
             else
-                reject()
+                { reject() }
         }).then(() => {
             getDataByIndex(db, "schedule", "date", props.date).then(e => {
                 setData(e)

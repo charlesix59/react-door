@@ -11,10 +11,11 @@ function Daily(){
 
     useEffect(()=>{
         new Promise((resolve, reject) => {
-            if (db)
-                resolve()
-            else
+            if (!db) {
                 reject()
+            } else {
+                resolve()
+            }
         }).then(()=>{
             getDataByIndex(db,"task","type","daily").then(e=>{
                 const arr = [];
