@@ -51,6 +51,6 @@ https://react-door.vercel.app/
 - [x] 1.9 重新调整项目结构
 - [x] 1.9.1 调整网站导航的图片样式
 - [x] 1.9.2 调整项目的主页layout
-- [ ] 1.9.3 引入eslint
+- [x] 1.9.3 引入eslint
 - [ ] 2.0.0 使用ts重构项目
 - [ ] more...

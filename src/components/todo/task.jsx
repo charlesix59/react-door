@@ -1,6 +1,6 @@
 import {List, Radio, Tag} from "antd";
 import {useContext, useEffect, useState} from "react";
-import {deleteData, getDataByIndex} from "../../utils/dbUtils";
+import {deleteData, getDataByIndex} from "../../utils/dbUtils.ts";
 import {dbContext} from "../../App";
 
 /**

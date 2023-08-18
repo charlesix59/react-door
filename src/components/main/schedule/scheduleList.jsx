@@ -1,6 +1,6 @@
 import {useContext, useEffect, useState} from "react";
 import {dbContext} from "../../../App";
-import {deleteData, getDataByIndex} from "../../../utils/dbUtils";
+import {deleteData, getDataByIndex} from "../../../utils/dbUtils.ts";
 import {Empty, List} from "antd";
 import ScheduleItem from "./scheduleItem";
 import DeleteBin from "./deleteBin";

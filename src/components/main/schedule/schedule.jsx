@@ -1,7 +1,7 @@
 import {Calendar, Col, Row, Button, Modal, TimePicker, Input} from "antd";
 import {useContext, useEffect, useState} from "react";
 import {dbContext} from "../../../App";
-import {getDataByKey, updateData} from "../../../utils/dbUtils";
+import {getDataByKey, updateData} from "../../../utils/dbUtils.ts";
 import dayjs from "dayjs";
 import ScheduleList from "./scheduleList";
 
