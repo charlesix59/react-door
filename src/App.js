@@ -1,5 +1,5 @@
 import './App.css';
-import {Col, Row} from "antd";
+import {Card, Col, Row} from "antd";
 import Main from "./components/main/main";
 import Navigator from "./components/portal/navigator";
 import Todo from "./components/todo/todo";
@@ -20,17 +20,21 @@ function App() {
 
   return (
     <dbContext.Provider value={db}>
-        <Row style={{height:"100vh"}}>
-            <Col span={18}>
-                <Main/>
-            </Col>
-            <Col span={6}>
-                <Todo/>
-            </Col>
-        </Row>
-        <Row>
-            <Navigator/>
-        </Row>
+        <div style={{background:"#e4e6eb"}}>
+            <Card style={{width:"80%",maxWidth:"1440px",margin:"auto"}}>
+                <Row style={{height:"100vh"}}>
+                    <Col span={18}>
+                        <Main/>
+                    </Col>
+                    <Col span={6}>
+                        <Todo/>
+                    </Col>
+                </Row>
+                <Row>
+                    <Navigator/>
+                </Row>
+            </Card>
+        </div>
     </dbContext.Provider>
   );
 }
