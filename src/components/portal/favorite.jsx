@@ -1,6 +1,8 @@
 import {Card, Col, Divider, Empty} from "antd";
 import Meta from "antd/es/card/Meta";
-import favorites from "../../assert/favoriteData.json"
+import {useContext, useEffect, useState} from "react";
+import {getFavorites} from "../../dao/favoriteDao.ts";
+import {dbContext} from "../../App";
 
 function Category(props){
     // console.log(props)
@@ -33,17 +35,25 @@ function Category(props){
 }
 
 function Favorite(){
-    console.log(favorites);
-    let data = favorites
+    const db = useContext(dbContext);
+    let [favorites,setFavorite] = useState({});
 
-    if(!data || data.length===0){
+    useEffect( () => {
+        getFavorites(db).then(res=>{
+            setFavorite(res);
+        })
+    }, [db]);
+
+    console.log(favorites);
+
+    if(!favorites || favorites.length===0){
         return <Empty/>
     }
     const array = [];
-    for (const key in data){
+    for (const key in favorites){
         array.push({
             key:key,
-            value:data[key]
+            value:favorites[key]
         })
     }
 

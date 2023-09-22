@@ -4,7 +4,7 @@ const openDB = function () {
         let indexedDB =
             window.indexedDB
         let db = null
-        const req = indexedDB.open("door", 1)
+        const req = indexedDB.open("door", 2)
         // 操作成功
         req.onsuccess = function () {
             // 数据库对象
@@ -28,6 +28,11 @@ const openDB = function () {
                 objectStore = db.createObjectStore("schedule", {keyPath: "id", autoIncrement: true})
                 objectStore.createIndex("date", "date", {unique: false})
                 objectStore.createIndex("title", "title", {unique: false})
+            }
+            if (!db.objectStoreNames.contains("favorite")) {
+                objectStore = db.createObjectStore("favorite", {keyPath: "id", autoIncrement: true})
+                objectStore.createIndex("title", "title", {unique: false})
+                objectStore.createIndex("category", "category", {unique: false})
             }
         }
     })

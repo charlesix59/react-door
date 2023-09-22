@@ -1,8 +1,8 @@
 const openDB = function () {
     return new Promise((resolve, reject) => {
         const indexedDB: IDBFactory = window.indexedDB
-        let db: IDBDatabase= null
-        const req = indexedDB.open("door", 1)
+        let db: IDBDatabase = null
+        const req = indexedDB.open("door", 2)
         // get db connection if already have a database
         req.onsuccess = function () {
             // 数据库对象
@@ -27,6 +27,11 @@ const openDB = function () {
                 objectStore = db.createObjectStore("schedule", {keyPath: "id", autoIncrement: true})
                 objectStore.createIndex("date", "date", {unique: false})
                 objectStore.createIndex("title", "title", {unique: false})
+            }
+            if (!db.objectStoreNames.contains("favorite")) {
+                objectStore = db.createObjectStore("favorite", {keyPath: "id", autoIncrement: true})
+                objectStore.createIndex("title", "title", {unique: false})
+                objectStore.createIndex("category", "category", {unique: false})
             }
         }
     })
@@ -167,4 +172,29 @@ const getDataByKey = function (db: IDBDatabase, storeName: string, key: number):
     })
 }
 
-export {openDB, addData, updateData, getDataByIndex, deleteData, getDataByKey}
+const getAllByCursor = (db: IDBDatabase, storeName: string):Promise<Array<unknown>> => {
+    if (!db) {
+        return Promise.reject("database connect instance can't be null")
+    }
+    const store = db.transaction(storeName, 'readonly').objectStore(storeName)
+    const request = store.openCursor();
+    const res = []
+    return new Promise((resolve, reject) => {
+        request.onsuccess = (e) => {
+            const cursor = e.target["result"]
+            if(cursor) {
+                res.push(cursor.value)
+                // console.log(res)
+                cursor.continue()
+            }
+            else {
+                resolve(res)
+            }
+        }
+        request.onerror = (e) => {
+            reject(e)
+        }
+    })
+}
+
+export {openDB, addData, updateData, getDataByIndex, deleteData, getDataByKey, getAllByCursor}
