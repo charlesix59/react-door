@@ -15,8 +15,6 @@ const openDB = function () {
         // rebuild the database
         req.onupgradeneeded = function (event) {
             // 数据库创建或升级的时候会触发
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
             db = event.target.result // 数据库对象
             let objectStore
             if (!db.objectStoreNames.contains("task")) {
