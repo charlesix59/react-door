@@ -53,4 +53,8 @@ https://react-door.vercel.app/
 - [x] 1.9.2 调整项目的主页layout
 - [x] 1.9.3 引入eslint
 - [ ] 2.0.0 将收藏栏数据导入数据库
+- [ ] 2.2.1 修改db返回值
+- [ ] 2.0.2 优化样式
+- [ ] 2.0.3 优化favorite组件渲染范围
+- [ ] 2.1.0 使用messagebox提示信息
 - [ ] more...
