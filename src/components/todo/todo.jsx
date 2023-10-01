@@ -3,7 +3,7 @@ import Daily from "./daily";
 import Task from "./task";
 import {useContext, useState} from "react";
 import {dbContext} from "../../App";
-import {addData} from "../../utils/dbUtils.ts";
+import {addData} from "../../utils/dbUtils";
 
 function Todo(){
     const [open, setOpen] = useState(false);

@@ -1,6 +1,6 @@
 import {Dropdown, List, Radio} from "antd";
 import {dbContext} from "../../App";
-import {deleteData, getDataByIndex, updateData} from "../../utils/dbUtils.ts";
+import {deleteData, getDataByIndex, updateData} from "../../utils/dbUtils";
 import {useContext, useEffect, useState} from "react";
 import {MenuOutlined} from "@ant-design/icons";
 

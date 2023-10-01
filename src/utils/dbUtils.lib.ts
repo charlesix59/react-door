@@ -172,6 +172,11 @@ const getDataByKey = function (db: IDBDatabase, storeName: string, key: number):
     })
 }
 
+/**
+ * 根据游标获取所有信息
+ * @param db 数据库实例
+ * @param storeName 表名
+ */
 const getAllByCursor = (db: IDBDatabase, storeName: string):Promise<Array<unknown>> => {
     if (!db) {
         return Promise.reject("database connect instance can't be null")

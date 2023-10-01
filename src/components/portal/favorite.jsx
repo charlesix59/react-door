@@ -1,7 +1,7 @@
 import {Card, Col, Divider, Empty} from "antd";
 import Meta from "antd/es/card/Meta";
 import React, {useContext, useEffect, useState} from "react";
-import {getFavorites} from "../../dao/favoriteDao.ts";
+import {getFavorites} from "../../dao/favoriteDao.js";
 import {dbContext} from "../../App";
 import {EditOutlined} from "@ant-design/icons";
 

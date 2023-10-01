@@ -2,7 +2,7 @@ import {Button, Input, Modal, Row, Space} from "antd";
 import Favorite from "./favorite";
 import {useContext, useRef, useState} from "react";
 import {dbContext} from "../../App";
-import {addData, getDataByKey, updateData} from "../../utils/dbUtils.ts";
+import {addData, getDataByKey, updateData} from "../../utils/dbUtils";
 
 function Navigator() {
     const [isOpen, setIsOpen] = useState(false)

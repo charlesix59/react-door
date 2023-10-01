@@ -1,10 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import {getAllByCursor} from "../utils/dbUtils.ts";
+import {getAllByCursor} from "../utils/dbUtils";
 
 
 const storeName = 'favorite'
-const getFavorites = async (db:IDBDatabase) => {
+const getFavorites = async (db) => {
     try {
         const data = await getAllByCursor(db,storeName)
         const res = {};

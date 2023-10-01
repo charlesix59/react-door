@@ -1,23 +1,22 @@
 const openDB = function () {
     return new Promise((resolve, reject) => {
-        //  兼容浏览器
-        let indexedDB =
-            window.indexedDB
+        const indexedDB = window.indexedDB
         let db = null
         const req = indexedDB.open("door", 2)
-        // 操作成功
+        // get db connection if already have a database
         req.onsuccess = function () {
             // 数据库对象
             db = req.result
             resolve({code: 0, success: true, data: db, msg: '数据库打开成功!'})
         }
-        // 操作失败
         req.onerror = function (event) {
             reject({code: -1, success: false, data: null, msg: '数据库打开失败!reason：' + event.target})
         }
-        // 创建表和索引
+        // rebuild the database
         req.onupgradeneeded = function (event) {
             // 数据库创建或升级的时候会触发
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             db = event.target.result // 数据库对象
             let objectStore
             if (!db.objectStoreNames.contains("task")) {
@@ -47,7 +46,7 @@ const openDB = function () {
 const addData = function (db, storeName, data) {
     return new Promise((resolve, reject) => {
         console.log(data)
-        let req = db
+        const req = db
             .transaction([storeName], 'readwrite')
             .objectStore(storeName) // 仓库对象
             .add(data)
@@ -59,7 +58,7 @@ const addData = function (db, storeName, data) {
         // 操作失败
         req.onerror = function (event) {
             console.log('数据写入失败')
-            let data = {code: -1, success: false, data: null, msg: '数据写入失败!' + event}
+            const data = {code: -1, success: false, data: null, msg: '数据写入失败!' + event}
             reject(data)
         }
     })
@@ -86,7 +85,7 @@ const updateData = function (db, storeName, data) {
         // 操作失败
         req.onerror = function (event) {
             console.log('数据更新失败')
-            let data = {code: -1, success: false, data: null, msg: '数据更新失败!' + event}
+            const data = {code: -1, success: false, data: null, msg: '数据更新失败!' + event}
             reject(data)
         }
     })
@@ -94,7 +93,7 @@ const updateData = function (db, storeName, data) {
 
 /**
  *
- * @param {object} db 数据库实例
+ * @param {IDBDatabase} db 数据库实例
  * @param {string} storeName 仓库名称
  * @param id 要删除的数据id
  * @return {Promise<unknown>}
@@ -113,7 +112,7 @@ const deleteData = function (db, storeName, id) {
         // 操作失败
         req.onerror = function (event) {
             console.log('数据更新失败')
-            let data = {code: -1, success: false, data: null, msg: '数据更新失败!' + event}
+            const data = {code: -1, success: false, data: null, msg: '数据更新失败!' + event}
             reject(data)
         }
     })
@@ -130,39 +129,69 @@ const getDataByIndex = function (db, storeName, indexName, indexValue) {
     if (!db) {
         return "";
     }
-    let store = db.transaction(storeName, 'readwrite').objectStore(storeName)
-    let request = store.index(indexName).getAll(indexValue)
+    const store = db.transaction(storeName, 'readwrite').objectStore(storeName)
+    const request = store.index(indexName).getAll(indexValue)
     return new Promise((resolve, reject) => {
         request.onerror = function (e) {
             reject(e)
         }
         request.onsuccess = function (e) {
-            resolve(e.target.result)
+            resolve(e.target["result"])
         }
     })
 }
 
 /**
  * 根据主键查询
- * @param {indexedDB} db 数据库实例
+ * @param {IDBDatabase} db 数据库实例
  * @param {string} storeName
  * @param {number} key
  * @return {string|Promise<unknown>}
  */
-const getDataByKey = function (db, storeName, key) {
+const getDataByKey = function (db, storeName, key){
     if (!db) {
         return "";
     }
-    let store = db.transaction(storeName, 'readwrite').objectStore(storeName)
-    let request = store.get(key);
+    const store = db.transaction(storeName, 'readwrite').objectStore(storeName)
+    const request = store.get(key);
     return new Promise((resolve, reject) => {
         request.onerror = function (e) {
             reject(e)
         }
         request.onsuccess = function (e) {
-            resolve(e.target.result)
+            resolve(e.target["result"])
         }
     })
 }
 
-export {openDB, addData, updateData, getDataByIndex, deleteData, getDataByKey}
+/**
+ * 根据游标获取所有信息
+ * @param db 数据库实例
+ * @param storeName 表名
+ */
+const getAllByCursor = (db, storeName)=> {
+    if (!db) {
+        return Promise.reject("database connect instance can't be null")
+    }
+    const store = db.transaction(storeName, 'readonly').objectStore(storeName)
+    const request = store.openCursor();
+    const res = []
+    return new Promise((resolve, reject) => {
+        request.onsuccess = (e) => {
+            const cursor = e.target["result"]
+            if(cursor) {
+                res.push(cursor.value)
+                // console.log(res)
+                cursor.continue()
+            }
+            else {
+                resolve(res)
+            }
+        }
+        request.onerror = (e) => {
+            reject(e)
+        }
+    })
+}
+
+export {openDB, addData, updateData, getDataByIndex, deleteData, getDataByKey, getAllByCursor}
