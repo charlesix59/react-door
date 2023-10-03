@@ -1,0 +1,40 @@
+.main-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center
+}
+
+.clock-container {
+    font-size: 7rem;
+    color: silver;
+    text-align: center;
+    margin: 0;
+}
+
+.schedule-container {
+    flex-grow: 1;
+    justify-content: center;
+    display: flex;
+    justify-self: center;
+    align-items: center;
+}
+
+.search{
+    margin-top: 4rem;
+    width: 60%;
+}
+
+.schedule-item-container{
+    text-align: center;
+}
+
+.schedule-item-add-button{
+    margin-bottom: 1rem;
+}
+
+.schedule-list{
+    overflow-y: scroll;
+    height: 60%;
+}

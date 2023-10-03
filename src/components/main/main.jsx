@@ -3,15 +3,16 @@ import MultiSearch from "./search/multiSearch";
 import Schedule from "./schedule/schedule";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
+import "./main.css"
 
 function Main(){
     return(
-        <div style={{height:"100vh",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center"}}>
-            <p style={{fontSize:"7rem",color:"silver",textAlign:"center",margin:"0 auto"}}>
+        <div className={"main-container"}>
+            <p className={"clock-container"}>
                 <Clock format={'HH:mm:ss'} ticking={true}/>
             </p>
             <MultiSearch/>
-            <div style={{flexGrow:1,justifyContent:"center",display:"flex",justifySelf:"center",alignItems:"center"}}>
+            <div className={"schedule-container"}>
                 <DndProvider backend={HTML5Backend}>
                     <Schedule/>
                 </DndProvider>

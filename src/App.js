@@ -20,9 +20,9 @@ function App() {
 
   return (
     <dbContext.Provider value={db}>
-        <div style={{background:"#e4e6eb"}}>
-            <Card style={{width:"80%",maxWidth:"1440px",margin:"auto"}}>
-                <Row style={{height:"100vh"}}>
+        <div className={"background-color"}>
+            <Card className={"app-content"}>
+                <Row className={"app-first-page"}>
                     <Col span={18}>
                         <Main/>
                     </Col>

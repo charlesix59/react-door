@@ -125,7 +125,7 @@ const deleteData = function (db, storeName, id) {
  * */
 const getDataByIndex = function (db, storeName, indexName, indexValue) {
     if (!db) {
-        return "";
+        return Promise.reject("database connect instance can't be null")
     }
     const store = db.transaction(storeName, 'readwrite').objectStore(storeName)
     const request = store.index(indexName).getAll(indexValue)
@@ -148,7 +148,7 @@ const getDataByIndex = function (db, storeName, indexName, indexValue) {
  */
 const getDataByKey = function (db, storeName, key){
     if (!db) {
-        return "";
+        return Promise.reject("database connect instance can't be null")
     }
     const store = db.transaction(storeName, 'readwrite').objectStore(storeName)
     const request = store.get(key);

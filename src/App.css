@@ -1,7 +1,21 @@
-.space-container{
+.space-container {
     margin: 1rem 6rem;
 }
 
-.favoriteEdit > svg{
+.favoriteEdit > svg {
     pointer-events: none;
+}
+
+.background-color {
+    background: #e4e6eb
+}
+
+.app-content {
+    width: 80%;
+    max-width: 1440px;
+    margin: auto;
+}
+
+.app-first-page {
+    height: 100vh;
 }

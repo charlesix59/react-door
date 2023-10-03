@@ -44,7 +44,7 @@ function Task() {
                         title={<span>{item.title}</span>}
                         description={item.description}
                     />
-                    <Tag color="#2db7f5">截止至{item.endTime.substr(0, 10)}</Tag>
+                    <Tag color="#2db7f5">截止至{item.endTime.substring(0, 10)}</Tag>
                 </List.Item>
             )}
         />

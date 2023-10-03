@@ -96,8 +96,8 @@ function Schedule() {
                     <Calendar fullscreen={false} onPanelChange={onPanelChange} onSelect={onSelect}/>
                 </div>
             </Col>
-            <Col offset={2} span={11} style={{display: "relative"}}>
-                <Button type={"primary"} onClick={showModel}>
+            <Col offset={2} span={11} className={"schedule-item-container"}>
+                <Button type={"primary"} onClick={showModel} className={"schedule-item-add-button"}>
                     添加日程
                 </Button>
                 <Modal

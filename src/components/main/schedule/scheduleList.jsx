@@ -57,7 +57,7 @@ export function ScheduleList(props) {
                 itemLayout="horizontal"
                 dataSource={data}
                 onClick={onListItemClickHandler}
-                style={{overflowY: "scroll", height: '60%'}}
+                className={"schedule-list"}
                 renderItem={(item, index) => (
                     <ScheduleItem key={item.id} item={item} index={index} changeData={changeDate}/>
                 )}
