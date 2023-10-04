@@ -33,7 +33,7 @@ function MultiSearch(){
     }
 
     const selectAfter = (
-        <Select defaultValue="必应" onChange={(e)=>{changeEngine(e)}}>
+        <Select defaultValue="百度" onChange={(e)=>{changeEngine(e)}}>
             <Option value="baidu">百度</Option>
             <Option value="baiduDev">百度开发者</Option>
             <Option value="google">谷歌</Option>
