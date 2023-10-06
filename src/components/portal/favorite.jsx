@@ -53,7 +53,7 @@ function Favorite(props) {
         })
     }, [db,props.count]);
 
-    // console.log(favorites);
+    // console.log("favorite被渲染了",props.count);
 
     if (!favorites || favorites.length === 0) {
         return <Empty/>
@@ -78,4 +78,11 @@ function Favorite(props) {
 
 }
 
-export default Favorite
+/**
+ * component Favorite should NOT reRender unless the props was changed,
+ * so we use memo to get better performance.
+ * And component Category was the subcomponent of Favorite,
+ * cause Favorite hasn't any state or Reactive variable, we don't need to memo the sub,
+ * just let it change every time follow it's parent
+ */
+export default React.memo(Favorite)

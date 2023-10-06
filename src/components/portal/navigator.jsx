@@ -22,6 +22,7 @@ function Navigator() {
 
     const [childCount, setChildCount] = useState(0)
 
+    // editId was the id in db of the selected data
     let editId = useRef(0);
 
     const db = useContext(dbContext)
