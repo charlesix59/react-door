@@ -9,6 +9,7 @@ import {dbContext} from "../../App";
 function Task() {
     const db = useContext(dbContext)
     const [data, setData] = useState([])
+    // read  longtime task
     useEffect(() => {
         new Promise((resolve, reject) => {
             if (db) {

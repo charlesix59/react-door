@@ -2,61 +2,71 @@ import {Button, DatePicker, Divider, Input, Modal, Select} from "antd";
 import Daily from "./daily";
 import Task from "./task";
 import {useContext, useState} from "react";
-import {dbContext} from "../../App";
+import {dbContext, messageContext} from "../../App";
 import {addData} from "../../utils/dbUtils";
 
-function Todo(){
+function Todo() {
     const [open, setOpen] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [isModeTask, setIsModeTask] = useState(true);
 
     const db = useContext(dbContext)
-    const [title,setTitle] = useState("")
-    const [description,setDescription] = useState("")
-    const [endTime,setEndTime] = useState()
+    const message = useContext(messageContext)
+    const [title, setTitle] = useState("")
+    const [description, setDescription] = useState("")
+    const [endTime, setEndTime] = useState()
 
-    const showModel = () =>{
+    const showModel = () => {
         setOpen(true);
     }
-    const handleOk = () =>{
+    const handleOk = () => {
         setConfirmLoading(true);
-        addData(db,"task",{
-            "type":isModeTask?"task":"daily",
-            "title":title,
-            "description":description,
-            "endTime":endTime
-        }).then(()=>{
+        addData(db, "task", {
+            "type": isModeTask ? "task" : "daily",
+            "title": title,
+            "description": description,
+            "endTime": endTime
+        }).then(() => {
+                message.open({
+                    type: "success",
+                    content: "添加任务成功"
+                }).then(r => r)
                 setConfirmLoading(false)
             }
-        )
+        ).catch(res=>{
+            console.log(res)
+            message.open({
+                type: "error",
+                content: "添加任务失败，请查看console"
+            }).then(r => r)
+        })
         setConfirmLoading(false);
         setOpen(false)
     }
-    const handleCancel = () =>{
+    const handleCancel = () => {
         setOpen(false)
     }
-    const onModeChanged = (e)=>{
-        if(e==="task"){
+    const onModeChanged = (e) => {
+        if (e === "task") {
             setIsModeTask(true)
-        }
-        else{
+        } else {
             setIsModeTask(false)
         }
     }
-    const onDateChanged = (e)=>{
+    const onDateChanged = (e) => {
         setEndTime(e?.toString())
     }
-    const onTitleChanged = (e)=>{
+    const onTitleChanged = (e) => {
         setTitle(e.target.value)
     }
-    const onDescChanged = (e)=>{
+    const onDescChanged = (e) => {
         setDescription(e.target.value)
     }
 
-    return(
+    return (
         <div>
             <Button type={"primary"}
-                    style={{width:"80%",display:"block",margin:"10%"}}
+                    style={{width: "80%", display: "block", margin: "10%"}}
                     onClick={showModel}
             >添加任务</Button>
             <Modal
@@ -71,8 +81,8 @@ function Todo(){
                     defaultValue="task"
                     onChange={onModeChanged}
                     options={[
-                        { value: 'task', label: '世界任务' },
-                        { value: 'daily', label: '日常任务' },
+                        {value: 'task', label: '世界任务'},
+                        {value: 'daily', label: '日常任务'},
                     ]}
                 />
                 <p>事件名称：</p>
@@ -89,4 +99,5 @@ function Todo(){
         </div>
     )
 }
+
 export default Todo

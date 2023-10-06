@@ -1,32 +1,37 @@
 import {Button, Input, Modal, Row, Space} from "antd";
 import Favorite from "./favorite";
 import {useContext, useRef, useState} from "react";
-import {dbContext} from "../../App";
+import {dbContext, messageContext} from "../../App";
 import {addData, getDataByKey, updateData} from "../../utils/dbUtils";
 
 function Navigator() {
     const [isOpen, setIsOpen] = useState(false)
     const [isEditOpen, setIsEditOpen] = useState(false)
+    // ref used in create favorite model
     const titleInputRef = useRef()
     const urlInputRef = useRef()
     const iconInputRef = useRef()
     const descriptionInputRef = useRef()
     const categoryInputRef = useRef()
+    // state used in edit favorite model
+    const [editTitle, setEditTitle] = useState("")
+    const [editUrl, setEditUrl] = useState("")
+    const [editIcon, setEditIcon] = useState("")
+    const [editDescription, setEditDescription] = useState("")
+    const [editCategory, setEditCategory] = useState("")
 
-    const [editTitle,setEditTitle] = useState("")
-    const [editUrl,setEditUrl] = useState("")
-    const [editIcon,setEditIcon] = useState("")
-    const [editDescription,setEditDescription] = useState("")
-    const [editCategory,setEditCategory] = useState("")
-
-    const [childCount,setChildCount] = useState(0)
+    const [childCount, setChildCount] = useState(0)
 
     let editId = useRef(0);
 
     const db = useContext(dbContext)
+    const message = useContext(messageContext)
     const openModel = () => {
         setIsOpen(true)
     }
+    /**
+     * when click confirm button in create model, call this then insert new date into db
+     */
     const modelOkHandler = () => {
         const obj = {
             title: titleInputRef.current?.input?.value,
@@ -35,8 +40,11 @@ function Navigator() {
             description: descriptionInputRef.current?.input?.value,
             category: categoryInputRef.current?.input?.value,
         }
-        addData(db, 'favorite', obj).then(res => {
-            console.log(res)
+        addData(db, 'favorite', obj).then(() => {
+            message.open({
+                type: "success",
+                content: "收藏夹插入成功"
+            }).then(r => r)
             setIsOpen(false)
         })
     }
@@ -48,14 +56,20 @@ function Navigator() {
     const editClickHandler = (e) => {
         if (e.target && e.target.id) {
             editId.current = parseInt(e.target.id.toString().substring(4))
-            getDataByKey(db,'favorite',editId.current).then((res)=>{
-                const {title,url,icon,description,category} = res
+            getDataByKey(db, 'favorite', editId.current).then((res) => {
+                const {title, url, icon, description, category} = res
                 setEditTitle(title)
                 setEditUrl(url)
                 setEditIcon(icon)
                 setEditDescription(description)
                 setEditCategory(category)
-            }).finally(()=>{
+            }).catch(res=>{
+                console.log(res)
+                message.open({
+                    type: "error",
+                    content: "数据库读取失败，请查看console"
+                }).then(r => r)
+            }).finally(() => {
                 setIsEditOpen(true)
             })
         }
@@ -70,8 +84,13 @@ function Navigator() {
             category: editCategory
         }
         updateData(db, 'favorite', obj).then(() => {
-            setChildCount(childCount+1)
-        }).finally(()=>{
+            setChildCount(childCount + 1)
+        }).then(() => {
+            message.open({
+                type: "success",
+                content: "收藏夹修改成功"
+            }).then(r => r)
+        }).finally(() => {
             setIsEditOpen(false)
         })
     }
@@ -100,19 +119,29 @@ function Navigator() {
                 <Modal title={"编辑导航网站"} open={isEditOpen} onOk={editOkHandler} onCancel={editCancelHandler}>
                     <Space direction={"vertical"} style={{width: "100%"}}>
                         <Input placeholder={"title"} value={editTitle}
-                               onChange={e=>{setEditTitle(e.target.value)}}
+                               onChange={e => {
+                                   setEditTitle(e.target.value)
+                               }}
                         />
                         <Input placeholder={"url"} value={editUrl}
-                               onChange={e=>{setEditUrl(e.target.value)}}
+                               onChange={e => {
+                                   setEditUrl(e.target.value)
+                               }}
                         />
                         <Input placeholder={"icon"} value={editIcon}
-                               onChange={e=>{setEditIcon(e.target.value)}}
+                               onChange={e => {
+                                   setEditIcon(e.target.value)
+                               }}
                         />
                         <Input placeholder={"description"} value={editDescription}
-                               onChange={e=>{setEditDescription(e.target.value)}}
+                               onChange={e => {
+                                   setEditDescription(e.target.value)
+                               }}
                         />
-                        <Input placeholder={"category"}  value={editCategory}
-                               onChange={e=>{setEditCategory(e.target.value)}}
+                        <Input placeholder={"category"} value={editCategory}
+                               onChange={e => {
+                                   setEditCategory(e.target.value)
+                               }}
                         />
                     </Space>
                 </Modal>

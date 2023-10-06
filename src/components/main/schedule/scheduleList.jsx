@@ -1,5 +1,5 @@
 import {useContext, useEffect, useState} from "react";
-import {dbContext} from "../../../App";
+import {dbContext, messageContext} from "../../../App";
 import {deleteData, getDataByIndex} from "../../../utils/dbUtils";
 import {Empty, List} from "antd";
 import ScheduleItem from "./scheduleItem";
@@ -11,21 +11,13 @@ import DeleteBin from "./deleteBin";
  * */
 export function ScheduleList(props) {
     const db = useContext(dbContext)
+    const message = useContext(messageContext)
     const [data, setData] = useState([])
     const [state, setState] = useState(false)
 
     useEffect(() => {
-        new Promise((resolve, reject) => {
-            if (db)
-                { resolve() }
-            else
-                { reject() }
-        }).then(() => {
-            getDataByIndex(db, "schedule", "date", props.date).then(e => {
-                setData(e)
-            })
-        }).catch(e => {
-            console.error(e)
+        getDataByIndex(db, "schedule", "date", props.date).then(e => {
+            setData(e)
         })
     }, [db, props, state])
 
@@ -34,20 +26,34 @@ export function ScheduleList(props) {
     }
 
     const onListItemClickHandler = function (e) {
-        if(e.target.tagName==='LI') {
+        if (e.target.tagName === 'LI') {
             return;
         }
         props.setOpen(true)
+        // todo: optimize this event part
         props.setId(parseInt(e.target.parentNode.parentNode.id))
     }
 
+    /**
+     * this function will pass to Child and called by it that will delete selected schedule item
+     * @param index selected item index in array
+     * @param id selected item id in db
+     */
     const changeDate = function (index, id) {
         deleteData(db, "schedule", id).then(() => {
             setState(state => {
                 return !state;
             });
+            message.open({
+                type: "success",
+                content: "日程删除成功"
+            })
         }).catch(e => {
             console.log(e)
+            message.open({
+                type: "error",
+                content: "日程删除失败，请查看console"
+            })
         })
     }
 

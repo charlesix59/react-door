@@ -1,6 +1,6 @@
 import {Calendar, Col, Row, Button, Modal, TimePicker, Input} from "antd";
 import {useContext, useEffect, useState} from "react";
-import {dbContext} from "../../../App";
+import {dbContext, messageContext} from "../../../App";
 import {getDataByKey, updateData} from "../../../utils/dbUtils";
 import dayjs from "dayjs";
 import ScheduleList from "./scheduleList";
@@ -26,6 +26,8 @@ function Schedule() {
 
     //db
     const db = useContext(dbContext)
+    // message
+    const message = useContext(messageContext)
 
     // functions about Data
     const onPanelChange = (value) => {
@@ -35,8 +37,10 @@ function Schedule() {
         setDate(value.format('YYYY-MM-DD'))
     }
 
-    //functions about Model
-    useEffect( () => {
+    /**
+     * fetch schedule date from database
+     */
+    useEffect(() => {
         async function fetchData() {
             if (!itemId) {
                 setBeginTime(dayjs());
@@ -49,15 +53,24 @@ function Schedule() {
                 setBeginTime(dayjs(data.beginTime.$d));
                 setEndTime(dayjs(data.endTime.$d))
                 setTitle(data.title)
-            }catch (e){
-                console.log(e);
+            } catch (e) {
+                message.open({
+                    type: "error",
+                    content: "数据库连接错误"
+                })
             }
         }
+
         fetchData().then(r => r);
-    },[db, itemId])
+    }, [db, itemId, message])
+
+    // function about model
     const showModel = () => {
         setOpen(true);
     }
+    /**
+     * when click confirm button, add schedule item into database
+     */
     const handleOk = () => {
         let data = {
             "date": date,
@@ -71,15 +84,29 @@ function Schedule() {
         }
         console.log(data)
         updateData(db, "schedule", data).then(() => {
+                message.open({
+                    type: "success",
+                    content: "日程添加成功"
+                })
                 setConfirmLoading(false)
                 setOpen(false)
                 setItemId(void 0)
             }
-        )
+        ).catch(e=>{
+            console.log(e)
+            message.open({
+                type: "error",
+                content: "日程写入失败，请查看console"
+            })
+        })
     }
     const handleCancel = () => {
         setOpen(false)
     }
+    /**
+     * handle time change event from range picker in model dialog
+     * @param e event
+     */
     const onTimeSelected = (e) => {
         setBeginTime(e[0])
         setEndTime(e[1])
@@ -109,7 +136,7 @@ function Schedule() {
                     onCancel={handleCancel}
                 >
                     <p>事件时间：</p>
-                    <RangePicker format={format} onChange={onTimeSelected} value={[beginTime,endTime]}/>
+                    <RangePicker format={format} onChange={onTimeSelected} value={[beginTime, endTime]}/>
                     <p>事件名称：</p>
                     <Input onChange={onTitleChanged} value={title}/>
                 </Modal>

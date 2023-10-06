@@ -5,8 +5,13 @@ import {getFavorites} from "../../dao/favoriteDao.js";
 import {dbContext} from "../../App";
 import {EditOutlined} from "@ant-design/icons";
 
+/**
+ * this is subcomponent that show cards group by categories
+ * @param props array of one spacial category of data
+ * @return {Element} Dom
+ * @constructor
+ */
 function Category(props) {
-    // console.log(props)
     return (
         <>
             <Divider orientation="left">{props.deta.key}</Divider>
