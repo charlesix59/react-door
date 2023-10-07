@@ -64,7 +64,7 @@ function Navigator() {
                 setEditIcon(icon)
                 setEditDescription(description)
                 setEditCategory(category)
-            }).catch(res=>{
+            }).catch(res => {
                 console.log(res)
                 message.open({
                     type: "error",
@@ -96,58 +96,57 @@ function Navigator() {
         })
     }
     const editCancelHandler = () => {
-        console.log(editTitle)
         setIsEditOpen(false)
     }
     return (
-        <div className={"space-container"}>
-            <Row justify="space-between" onClick={editClickHandler}>
-                <Favorite count={childCount}/>
-            </Row>
-            <Row>
-                <Button onClick={openModel}>
-                    添加导航网站
-                </Button>
-                <Modal title={"添加导航网站"} open={isOpen} onOk={modelOkHandler} onCancel={modelCancelHandler}>
-                    <Space direction={"vertical"} style={{width: "100%"}}>
-                        <Input placeholder={"title"} ref={titleInputRef}/>
-                        <Input placeholder={"url"} ref={urlInputRef}/>
-                        <Input placeholder={"icon"} ref={iconInputRef}/>
-                        <Input placeholder={"description"} ref={descriptionInputRef}/>
-                        <Input placeholder={"category"} ref={categoryInputRef}/>
-                    </Space>
-                </Modal>
-                <Modal title={"编辑导航网站"} open={isEditOpen} onOk={editOkHandler} onCancel={editCancelHandler}>
-                    <Space direction={"vertical"} style={{width: "100%"}}>
-                        <Input placeholder={"title"} value={editTitle}
-                               onChange={e => {
-                                   setEditTitle(e.target.value)
-                               }}
-                        />
-                        <Input placeholder={"url"} value={editUrl}
-                               onChange={e => {
-                                   setEditUrl(e.target.value)
-                               }}
-                        />
-                        <Input placeholder={"icon"} value={editIcon}
-                               onChange={e => {
-                                   setEditIcon(e.target.value)
-                               }}
-                        />
-                        <Input placeholder={"description"} value={editDescription}
-                               onChange={e => {
-                                   setEditDescription(e.target.value)
-                               }}
-                        />
-                        <Input placeholder={"category"} value={editCategory}
-                               onChange={e => {
-                                   setEditCategory(e.target.value)
-                               }}
-                        />
-                    </Space>
-                </Modal>
-            </Row>
-        </div>
+        <>
+            <div className={"favorite-container"}>
+                <Row justify="space-between" onClick={editClickHandler}>
+                    <Favorite count={childCount}/>
+                </Row>
+            </div>
+            <Button onClick={openModel} className={"favorite-add-button"}>
+                添加导航网站
+            </Button>
+            <Modal title={"添加导航网站"} open={isOpen} onOk={modelOkHandler} onCancel={modelCancelHandler}>
+                <Space direction={"vertical"} style={{width: "100%"}}>
+                    <Input placeholder={"title"} ref={titleInputRef}/>
+                    <Input placeholder={"url"} ref={urlInputRef}/>
+                    <Input placeholder={"icon"} ref={iconInputRef}/>
+                    <Input placeholder={"description"} ref={descriptionInputRef}/>
+                    <Input placeholder={"category"} ref={categoryInputRef}/>
+                </Space>
+            </Modal>
+            <Modal title={"编辑导航网站"} open={isEditOpen} onOk={editOkHandler} onCancel={editCancelHandler}>
+                <Space direction={"vertical"} style={{width: "100%"}}>
+                    <Input placeholder={"title"} value={editTitle}
+                           onChange={e => {
+                               setEditTitle(e.target.value)
+                           }}
+                    />
+                    <Input placeholder={"url"} value={editUrl}
+                           onChange={e => {
+                               setEditUrl(e.target.value)
+                           }}
+                    />
+                    <Input placeholder={"icon"} value={editIcon}
+                           onChange={e => {
+                               setEditIcon(e.target.value)
+                           }}
+                    />
+                    <Input placeholder={"description"} value={editDescription}
+                           onChange={e => {
+                               setEditDescription(e.target.value)
+                           }}
+                    />
+                    <Input placeholder={"category"} value={editCategory}
+                           onChange={e => {
+                               setEditCategory(e.target.value)
+                           }}
+                    />
+                </Space>
+            </Modal>
+        </>
     )
 }
 

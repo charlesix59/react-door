@@ -19,3 +19,15 @@
 .app-first-page {
     height: 100vh;
 }
+
+.favorite-container{
+    width: 100%;
+    display: flex;
+    margin: 0 6rem;
+}
+
+.favorite-add-button{
+    left: 50%;
+    margin-top: 1rem;
+    transform: translate(0,50%);
+}
