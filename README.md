@@ -55,4 +55,9 @@ https://react-door.vercel.app/
 - [x] 2.0.3 优化favorite组件渲染范围
 - [x] 2.0.4 修改搜索栏问题
 - [x] 2.1.0 使用messagebox提示信息
+- [x] 2.1.1 修改daily完成的bug
+- [x] 2.1.2 设置Model Input 的 require
+- [x] 2.1.3 设置model每次清空
+- [ ] 2.1.4 修改todo的key
+- [ ] 2.2.0 修改date的样式
 - [ ] more...

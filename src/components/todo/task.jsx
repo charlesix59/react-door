@@ -6,7 +6,7 @@ import {dbContext} from "../../App";
 /**
  * this function will show your target
  *  */
-function Task() {
+function Task({count}) {
     const db = useContext(dbContext)
     const [data, setData] = useState([])
     // read  longtime task
@@ -24,7 +24,7 @@ function Task() {
         }).catch(e => {
             console.error(e)
         })
-    }, [db])
+    }, [db, count])
     const selectHandler = (e) => {
         const arr = JSON.parse(JSON.stringify(data));
         arr.splice(parseInt(e.target.name), 1);

@@ -3,40 +3,32 @@ import {dbContext, messageContext} from "../../App";
 import {deleteData, getDataByIndex, updateData} from "../../utils/dbUtils";
 import {useContext, useEffect, useState} from "react";
 import {MenuOutlined} from "@ant-design/icons";
+import dayjs from "dayjs";
 
-function Daily() {
+function Daily({count}) {
     const db = useContext(dbContext)
     const message = useContext(messageContext)
     const [data, setData] = useState([])
     const [reload, setReload] = useState(false);
 
+    // get daily task and push those not done today to state Array to show
     useEffect(() => {
-        new Promise((resolve, reject) => {
-            if (!db) {
-                reject()
-            } else {
-                resolve()
-            }
-        }).then(() => {
-            getDataByIndex(db, "task", "type", "daily").then(e => {
-                const arr = [];
-                for (let item of e) {
-                    if (item.endTime.getDay() !== new Date().getDay()) {
-                        arr.push(item)
-                    }
+        getDataByIndex(db, "task", "type", "daily").then(e => {
+            const arr = [];
+            for (let item of e) {
+                if (!item.endTime || new Date(item.endTime.$d).getDate() !== new Date().getDate()) {
+                    arr.push(item)
                 }
-                setData(arr)
-            })
-        }).catch(e => {
-            console.error(e)
+            }
+            setData(arr)
         })
-    }, [db, reload])
+    }, [db, reload, count])
 
     // when select the radio, set task done
     const selectHandler = function (e) {
         e.target.checked = false;
         const arr = JSON.parse(JSON.stringify(data));
-        arr[parseInt(e.target.name)].endTime = new Date();
+        arr[parseInt(e.target.name)].endTime = dayjs();
         updateData(db, "task", arr[parseInt(e.target.name)]).then().catch(e => {
             message.open({
                 type: "error",
@@ -48,6 +40,7 @@ function Daily() {
         setData(arr);
     }
 
+    // delete daily from db
     const deleteTodo = function (id) {
         deleteData(db, "task", id).then(() => {
             message.open({
@@ -68,6 +61,7 @@ function Daily() {
             deleteTodo(id)
         }
     }
+
     // this is the items of dropDown menu
     const items = [
         {

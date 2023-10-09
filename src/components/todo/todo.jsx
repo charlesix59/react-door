@@ -5,9 +5,16 @@ import {useContext, useState} from "react";
 import {dbContext, messageContext} from "../../App";
 import {addData} from "../../utils/dbUtils";
 
+/**
+ * this component contain the tow sub to-do component and add new to-do
+ * @return {JSX.Element}
+ * @constructor
+ */
 function Todo() {
+    // state about task type in model
     const [open, setOpen] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
+    // ture means it's task(world task), false means it's daily task
     const [isModeTask, setIsModeTask] = useState(true);
 
     const db = useContext(dbContext)
@@ -15,11 +22,20 @@ function Todo() {
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [endTime, setEndTime] = useState()
+    const [dailyCount, setDailyCount] = useState(0)
+    const [worldCount, setWorldCount] = useState(0)
 
     const showModel = () => {
         setOpen(true);
     }
     const handleOk = () => {
+        if (!title || !description || (!endTime && isModeTask)) {
+            message.open({
+                type: "error",
+                content: "所有字段都为必填，不能为空"
+            })
+            return
+        }
         setConfirmLoading(true);
         addData(db, "task", {
             "type": isModeTask ? "task" : "daily",
@@ -27,21 +43,27 @@ function Todo() {
             "description": description,
             "endTime": endTime
         }).then(() => {
-                message.open({
-                    type: "success",
-                    content: "添加任务成功"
-                }).then(r => r)
-                setConfirmLoading(false)
+            message.open({
+                type: "success",
+                content: "添加任务成功"
+            }).then(r => r)
+            // change count to rerender sub
+            if (isModeTask) {
+                setWorldCount(c => c + 1)
+            } else {
+                setDailyCount(c => c + 1)
             }
-        ).catch(res=>{
+        }).catch(res => {
             console.log(res)
             message.open({
                 type: "error",
                 content: "添加任务失败，请查看console"
             }).then(r => r)
+        }).finally(() => {
+            setConfirmLoading(false);
+            setOpen(false)
         })
-        setConfirmLoading(false);
-        setOpen(false)
+
     }
     const handleCancel = () => {
         setOpen(false)
@@ -75,6 +97,10 @@ function Todo() {
                 onOk={handleOk}
                 confirmLoading={confirmLoading}
                 onCancel={handleCancel}
+                // we use OR option to judge if dailyCount or worldCount was changed
+                // only when db operations successfully, the two state will change
+                // SO, if add Data successfully, init the state, otherwise keep the state
+                key={dailyCount|worldCount}
             >
                 <p>事件类型：</p>
                 <Select
@@ -93,9 +119,9 @@ function Todo() {
                 <DatePicker onChange={onDateChanged} disabled={!isModeTask}/>
             </Modal>
             <Divider orientation="left">世界任务</Divider>
-            <Task/>
+            <Task count={worldCount}/>
             <Divider orientation="left">每日委托</Divider>
-            <Daily/>
+            <Daily count={dailyCount}/>
         </div>
     )
 }
