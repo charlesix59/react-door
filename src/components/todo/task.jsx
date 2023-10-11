@@ -39,7 +39,7 @@ function Task({count}) {
             itemLayout="horizontal"
             dataSource={data}
             renderItem={(item, key) => (
-                <List.Item>
+                <List.Item key={item.id}>
                     <Radio id={item.id} name={key}></Radio>
                     <List.Item.Meta
                         title={<span>{item.title}</span>}
