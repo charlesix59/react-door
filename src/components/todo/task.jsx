@@ -1,5 +1,5 @@
 import {List, Radio, Tag} from "antd";
-import {useContext, useEffect, useState} from "react";
+import React,{useContext, useEffect, useState} from "react";
 import {deleteData, getDataByIndex} from "../../utils/dbUtils";
 import {dbContext} from "../../App";
 
@@ -52,4 +52,4 @@ function Task({count}) {
     )
 }
 
-export default Task
+export default React.memo(Task)

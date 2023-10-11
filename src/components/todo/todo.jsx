@@ -92,15 +92,15 @@ function Todo() {
                     onClick={showModel}
             >添加任务</Button>
             <Modal
-                title="Title"
+                title="添加任务"
                 open={open}
                 onOk={handleOk}
                 confirmLoading={confirmLoading}
                 onCancel={handleCancel}
-                // we use OR option to judge if dailyCount or worldCount was changed
+                // we use XOR option to judge if dailyCount or worldCount was changed
                 // only when db operations successfully, the two state will change
                 // SO, if add Data successfully, init the state, otherwise keep the state
-                key={dailyCount|worldCount}
+                key={dailyCount^worldCount}
             >
                 <p>事件类型：</p>
                 <Select

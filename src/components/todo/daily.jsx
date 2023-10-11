@@ -1,7 +1,7 @@
 import {Dropdown, List, Radio} from "antd";
 import {dbContext, messageContext} from "../../App";
 import {deleteData, getDataByIndex, updateData} from "../../utils/dbUtils";
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {MenuOutlined} from "@ant-design/icons";
 import dayjs from "dayjs";
 
@@ -93,4 +93,4 @@ function Daily({count}) {
     )
 }
 
-export default Daily
+export default React.memo(Daily)
