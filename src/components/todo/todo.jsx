@@ -22,6 +22,7 @@ function Todo() {
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [endTime, setEndTime] = useState()
+    // this two state below were used to refresh sub
     const [dailyCount, setDailyCount] = useState(0)
     const [worldCount, setWorldCount] = useState(0)
 
@@ -36,7 +37,8 @@ function Todo() {
             })
             return
         }
-        setConfirmLoading(true);
+        setConfirmLoading(true)
+        console.log(endTime)
         addData(db, "task", {
             "type": isModeTask ? "task" : "daily",
             "title": title,
@@ -76,7 +78,7 @@ function Todo() {
         }
     }
     const onDateChanged = (e) => {
-        setEndTime(e?.toString())
+        setEndTime(e.toDate())
     }
     const onTitleChanged = (e) => {
         setTitle(e.target.value)

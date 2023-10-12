@@ -3,7 +3,6 @@ import {dbContext, messageContext} from "../../App";
 import {deleteData, getDataByIndex, updateData} from "../../utils/dbUtils";
 import React, {useContext, useEffect, useState} from "react";
 import {MenuOutlined} from "@ant-design/icons";
-import dayjs from "dayjs";
 
 function Daily({count}) {
     const db = useContext(dbContext)
@@ -16,11 +15,13 @@ function Daily({count}) {
         getDataByIndex(db, "task", "type", "daily").then(e => {
             const arr = [];
             for (let item of e) {
-                if (!item.endTime || new Date(item.endTime.$d).getDate() !== new Date().getDate()) {
+                if (!item.endTime || item.endTime.getDate() !== new Date().getDate()) {
                     arr.push(item)
                 }
             }
             setData(arr)
+        }).catch(e => {
+            console.log(e)
         })
     }, [db, reload, count])
 
@@ -28,7 +29,7 @@ function Daily({count}) {
     const selectHandler = function (e) {
         e.target.checked = false;
         const arr = JSON.parse(JSON.stringify(data));
-        arr[parseInt(e.target.name)].endTime = dayjs();
+        arr[parseInt(e.target.name)].endTime = new Date();
         updateData(db, "task", arr[parseInt(e.target.name)]).then().catch(e => {
             message.open({
                 type: "error",

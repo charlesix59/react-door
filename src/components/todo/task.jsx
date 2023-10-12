@@ -1,5 +1,5 @@
 import {List, Radio, Tag} from "antd";
-import React,{useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {deleteData, getDataByIndex} from "../../utils/dbUtils";
 import {dbContext} from "../../App";
 
@@ -45,7 +45,9 @@ function Task({count}) {
                         title={<span>{item.title}</span>}
                         description={item.description}
                     />
-                    <Tag color="#2db7f5">截止至{item.endTime.substring(0, 10)}</Tag>
+                    <Tag color="#2db7f5">
+                        截止至 {`${item.endTime.getFullYear()}-${item.endTime.getMonth()}-${item.endTime.getDate()}`}
+                    </Tag>
                 </List.Item>
             )}
         />

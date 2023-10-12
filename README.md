@@ -60,5 +60,6 @@ https://react-door.vercel.app/
 - [x] 2.1.3 设置model每次清空
 - [x] 2.1.4 修改todo的key
 - [x] 2.1.5 memo todo组件
-- [ ] 2.2.0 修改date的样式
+- [x] 2.2.0 修改date的样式
+- [ ] 2.3.0 修复首屏error问题
 - [ ] more...
