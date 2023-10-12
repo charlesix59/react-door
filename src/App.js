@@ -1,5 +1,5 @@
 import './App.css';
-import {Card, Col, message, Row} from "antd";
+import {Card, Col, Empty, message, Row} from "antd";
 import Main from "./components/main/main";
 import Navigator from "./components/portal/navigator";
 import Todo from "./components/todo/todo";
@@ -10,42 +10,49 @@ export const dbContext = createContext(null)
 export const messageContext = createContext(null)
 
 function App() {
-    const [db,setDb] = useState(null)
+    const [db, setDb] = useState(null)
     const [messageAPI, contextHolder] = message.useMessage()
-    useEffect(()=>{
-            openDB().then(e=>{
+
+    useEffect(() => {
+            openDB().then(e => {
                 setDb(e.data)
-            }).catch(()=>{
+            }).catch(() => {
                 messageAPI.open({
                     type: "error",
                     content: "数据库连接错误"
-                }).then(r  => r)
+                }).then(r => r)
             })
-        },[messageAPI]
+        }, [messageAPI]
     )
 
-  return (
-    <dbContext.Provider value={db}>
-        <messageContext.Provider value={messageAPI}>
-            {contextHolder}
-            <div className={"background-color"}>
-                <Card className={"app-content"}>
-                    <Row className={"app-first-page"}>
-                        <Col span={18}>
-                            <Main/>
-                        </Col>
-                        <Col span={6}>
-                            <Todo/>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Navigator/>
-                    </Row>
-                </Card>
-            </div>
-        </messageContext.Provider>
-    </dbContext.Provider>
-  );
+    if (!db) {
+        // in the first render, db will be null, and then the then statement will execute,
+        // and change the value of db, then cause the second render
+        return <Empty/>
+    }
+
+    return (
+        <dbContext.Provider value={db}>
+            <messageContext.Provider value={messageAPI}>
+                {contextHolder}
+                <div className={"background-color"}>
+                    <Card className={"app-content"}>
+                        <Row className={"app-first-page"}>
+                            <Col span={18}>
+                                <Main/>
+                            </Col>
+                            <Col span={6}>
+                                <Todo/>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Navigator/>
+                        </Row>
+                    </Card>
+                </div>
+            </messageContext.Provider>
+        </dbContext.Provider>
+    );
 }
 
 export default App;

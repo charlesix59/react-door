@@ -1,5 +1,4 @@
 import {Input, Select} from "antd";
-import {Option} from "antd/es/mentions";
 import {BoldOutlined} from "@ant-design/icons";
 import {useState} from "react";
 import selectEngine from "./searchEngine";
@@ -34,10 +33,10 @@ function MultiSearch(){
 
     const selectAfter = (
         <Select defaultValue="百度" onChange={(e)=>{changeEngine(e)}}>
-            <Option value="baidu">百度</Option>
-            <Option value="baiduDev">百度开发者</Option>
-            <Option value="google">谷歌</Option>
-            <Option value="bing">必应</Option>
+            <Select.Option value="baidu">百度</Select.Option>
+            <Select.Option value="baiduDev">百度开发者</Select.Option>
+            <Select.Option value="google">谷歌</Select.Option>
+            <Select.Option value="bing">必应</Select.Option>
         </Select>
     );
 
